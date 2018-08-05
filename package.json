@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
+    "bcrypt": "^3.0.0",
     "localforage": "^1.7.2",
     "meteor-node-stubs": "^0.4.1",
     "meteor-react-status": "0.0.3",
