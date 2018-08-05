@@ -102,7 +102,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 				//console.log(obj.label);
 			})
 		}
-
+//sadasdasdas
 		const add = (a, b) =>
  			a + b
 		
