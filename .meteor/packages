@@ -37,3 +37,4 @@ accounts-facebook
 facebook-config-ui
 meteorhacks:aggregate
 momentjs:moment
+session
