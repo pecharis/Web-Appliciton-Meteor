@@ -126,10 +126,10 @@ export default class OrderResolutionSingle extends React.Component {
 		var comm;	
 		if(this.props.comments){comm=this.props.comments;}else{comm=" ";}			
 		if(!LocalOrder.find().fetch()[0]){
-			testing=<a>0</a>
+			testing=<h2 className="whitediv">0</h2>
 		}else{
 			if(!LocalOrder.findOne({ "items.name" : current_field })){
-				testing=<a>0</a>
+				testing=<h2 className="whitediv">0</h2>
 			}else{
 				var value_of_item=LocalOrder.findOne({ "items.name" : current_field}).items;
 				if(this.props.comments){
@@ -141,7 +141,7 @@ export default class OrderResolutionSingle extends React.Component {
 						return obj.name===current_field
 					});
 				}
-				testing=<a>{itemid_removing.length}</a>
+				testing=<h2 className="whitediv">{itemid_removing.length}</h2>
 			}
 		}
 		var line;
