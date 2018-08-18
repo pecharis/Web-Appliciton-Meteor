@@ -6,7 +6,6 @@ import 'react-select/dist/react-select.css';
 export default class ResolutionForms extends React.Component {
 
 	addResolution(event) {
-		event.preventDefault();
     	var name = this.refs.resolution1.value.trim();
     	var shop = this.refs.resolution2.value.trim();
     	var tables = this.refs.resolution3.value;
