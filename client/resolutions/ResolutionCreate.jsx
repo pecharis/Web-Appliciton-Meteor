@@ -6,6 +6,7 @@ import 'react-select/dist/react-select.css';
 export default class ResolutionForms extends React.Component {
 
 	addResolution(event) {
+		event.preventDefault();
     	var name = this.refs.resolution1.value.trim();
     	var shop = this.refs.resolution2.value.trim();
     	var tables = this.refs.resolution3.value;
@@ -13,9 +14,11 @@ export default class ResolutionForms extends React.Component {
     	if(name && shop && tables){
     		Session.set('user',Meteor.users.find({_id : Meteor.userId() }).fetch()[0]);
     		if(Session.get('user')){
-    			if(Session.get('user').profile.status==="accepted"){
-    				console.log("mpiiiiiika");
-    				Meteor.call('deletefromShop',Session.get('user').username,Session.get('user').profile.position,Session.get('user').profile.shop);
+    			if(Session.get('user').profile){
+	    			if(Session.get('user').profile.status==="accepted"){
+	    				console.log("mpiiiiiika");
+	    				Meteor.call('deletefromShop',Session.get('user').username,Session.get('user').profile.position,Session.get('user').profile.shop);
+	    			}
     			}
     		}
 			Meteor.call('addShop',name,shop,tables, (error, data)=>{
