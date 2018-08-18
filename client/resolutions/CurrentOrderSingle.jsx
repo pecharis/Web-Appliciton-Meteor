@@ -71,7 +71,7 @@ export default class CurrentOrderSingle extends React.Component {
 				<a> quantity : </a>
 				<a>{this.props.resolution.quantity}</a>
 				<a> each : </a>
-				<a>{this.props.resolution[string_price_of_item]}e</a>
+				<a>{this.props.resolution[string_price_of_item]}€</a>
 					
 				<button onClick={this.minus.bind(this)}>-					
 				</button>

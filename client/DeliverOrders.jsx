@@ -75,7 +75,7 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
 		return (
 			<div className="resolutions">
   			<nav className="snip1490">
-				<li><a href="/orders">  New Order  </a></li>
+				<li><a href="/orders">New</a></li>
 				<li><a href="/update_orders">Update</a></li>
 				<li className="current"><a href="/deliver_orders">Deliver</a></li>
 				<li><a href="/pay_orders">Pay</a></li>

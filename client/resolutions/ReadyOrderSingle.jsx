@@ -32,7 +32,7 @@ export default class ReadyOrderSingle extends Component {
 					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;
 					Meteor.call('toggleReadyOrderItem',
 						this.props.resolution,test[0].items[i].ready,by,test[0].items[i].name,
-						test[0].items[i].itemid, function (err, res) {
+						test[0].items[i].itemid,true, function (err, res) {
 						if(err){
       						console.log(err);
    						}else{
@@ -47,7 +47,7 @@ export default class ReadyOrderSingle extends Component {
 			var test=this.currOrderId(this.props.resolution._id);			
 				Meteor.call('toggleReadyOrderItem',
 					test[0],test[0].items[i].ready,by,test[0].items[i].name,
-					test[0].items[i].itemid, function (err, res) {
+					test[0].items[i].itemid,true, function (err, res) {
 					if(err){
       					console.log(err);
    					}else{}     		
@@ -77,6 +77,15 @@ export default class ReadyOrderSingle extends Component {
 		var test=this.props.resolution;
 		
 		if(test){
+			test.items=test.items.sort(function(a, b) {
+				    var textA = a.name.toUpperCase();
+				    var textB = b.name.toUpperCase();
+				    if(textA===textB){
+				    	 var textA = a.comments.toUpperCase();
+				    	 var textB = b.comments.toUpperCase();
+				    }
+				    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+				});
 			listItems=test.items.map((resolution,index)=>{
 					return <ReadyOrderSingleItem key={index} 
 					resolution={resolution}
@@ -94,15 +103,15 @@ export default class ReadyOrderSingle extends Component {
 		}
 
 		if(!this.props.resolution.ready && this.props.ready==="false" && this.props.resolution.completed===false){
-			single=<div className={resolutionClass}>
+			single=<div className="wrapper">
 				<input type="checkbox"
 					readOnly={true}
 					id={this.props.resolution._id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<button onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} remaining total : {total}e</button>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} remaining total : {total}€</label>
 				{this.state.showPopup ? 
-          			<div>
+          			<div className="testul">
           			{listItems}
           			</div>
           			: null
@@ -114,15 +123,15 @@ export default class ReadyOrderSingle extends Component {
 			</div>
 		}
 		if(this.props.resolution.ready && this.props.ready==="true" && this.props.resolution.completed===false){
-			single=<div className={resolutionClass}>
+			single=<div className="wrapper">
 				<input type="checkbox"
 					readOnly={true}
 					id={this.props.resolution._id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<button onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number}</button>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number}</label>
 				{this.state.showPopup ? 
-          			<div>
+          			<div className="testul">
           			{listItems}
           			</div>
           			: null

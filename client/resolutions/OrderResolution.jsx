@@ -38,7 +38,6 @@ export default class OrderResolution extends TrackerReact(React.Component) {
     		this.setState({ selectedOption });
     		LocalOrder.clear();
     		Session.set('total',0);
-    		// selectedOption can be null when the `x` (close) button is clicked
     		if (selectedOption) {
     			Session.set('table_number', selectedOption.label);
       			this.setState({'update_now':'yes'});
@@ -55,7 +54,6 @@ export default class OrderResolution extends TrackerReact(React.Component) {
     		this.setState({
       			showPopup: !this.state.showPopup
    			});
-   			console.log(LocalOrder.find().fetch()[0]);
     	}
     	this.updateNow = this.updateNow.bind(this);
 	}
@@ -179,33 +177,43 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 		Session.set('table_number','');
 		this.updateNow();
 	}
+	cancel_order_completly(){
+		Meteor.call('deleteOrder',LocalOrder.find().fetch()[0]);
+		Session.set('table_number','');
+		this.setState({'update_now':'yes'});
+	}
 
 	complete_cancel_change_button(flag){
 		var complete_order_button = <h2></h2>			
 		var cancel_button = <h2></h2>
 		var change_order = <h2></h2>
 		var change_table_number_button=<h2></h2>
+		var cancel_order_completly=<h2></h2>
 		if (flag){	
 			complete_order_button =<button	className="snip1086" 
 			onClick={this.addToOrder.bind(this)}>
 			<span>Submit</span><i className="ion-checkmark"></i></button>		
 			cancel_button=<button  
-				className="btn-cancel"
-				onClick={this.cancelOrder.bind(this)}>
-				&times;
-				</button>
+				className="snip1339"
+				onClick={this.cancelOrder.bind(this)}
+				>cancel update changes</button>
 			change_table_number_button=<button 
 				className="snip1339"
 				onClick={this.togglePopup.bind(this)}
-				>change table number</button>
+				>update table number</button>
 			change_order=<button 
 				type="button"
 				className="snip1339"
 				onClick={this.change_order.bind(this)}
 				>change order</button>	
+			cancel_order_completly=<button 
+				type="button"
+				className="snip1339"
+				onClick={this.cancel_order_completly.bind(this)}
+				>remove order</button>	
 				
 		}
-		return [complete_order_button, cancel_button, change_table_number_button, change_order];
+		return [complete_order_button, cancel_button, change_table_number_button, change_order,cancel_order_completly];
 	}
 
 			
@@ -218,6 +226,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 		var cancel_button;
 		var show_listItems;
 		var change_table_number_button;
+		var cancel_order;
 		var select_table;
 		var lele=this.update_order_number();
 
@@ -227,6 +236,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 			cancel_button=buttons[1]; 
 			change_table_number_button=buttons[2];
 			change_order=buttons[3];
+			cancel_order=buttons[4];
 			show_listItems=<h2>waiting for table number </h2>									
 			var options=[];
 			var options = this.props.table_numbers.slice();
@@ -239,6 +249,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 			buttons=this.complete_cancel_change_button(1);
 			change_order=buttons[3];
 			cancel_button=buttons[1]; 
+			cancel_order=buttons[4];
 			change_table_number_button=buttons[2];
 			if(Session.get('total')){				
 				complete_order_button=buttons[0];				
@@ -247,15 +258,18 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 
 		return(			 	
 			<div>
+				<div className="leftdiv3">
+				{change_table_number_button}						
+				{change_order}				
+				{cancel_order}
+				{cancel_button}
+				</div>
 				<div className="leftdiv2">
-					<CurrentOrder className="leftdiv" callback={this.updateNow}/>
+					<CurrentOrder callback={this.updateNow}/>					
 				</div>
-				<div className="leftdiv">
-					{change_table_number_button}
-					{change_order}
+				<div className="leftdiv4">					
 					{complete_order_button}
-					{cancel_button}
-				</div>
+					</div>
 				<div className="belowdiv">	
 					{this.state.showPopup ? 
        					<div>

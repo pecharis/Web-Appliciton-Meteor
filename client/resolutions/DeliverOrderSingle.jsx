@@ -34,7 +34,7 @@ export default class DeliverOrderSingle extends Component {
 					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;
 					Meteor.call('toggleDeliverOrderItem',
 						test[0],test[0].items[i].status,by,test[0].items[i].name,
-						test[0].items[i].itemid, function (err, res) {
+						test[0].items[i].itemid,true, function (err, res) {
 						if(err){
       						console.log(err);
    						}else{
@@ -49,7 +49,7 @@ export default class DeliverOrderSingle extends Component {
 			var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;			
 				Meteor.call('toggleDeliverOrderItem',
 					test[0],test[0].items[i].status,by,test[0].items[i].name,
-					test[0].items[i].itemid, function (err, res) {
+					test[0].items[i].itemid,true, function (err, res) {
 					if(err){
       					console.log(err);
    					}else{}     		
@@ -69,12 +69,22 @@ export default class DeliverOrderSingle extends Component {
 		const status= this.props.resolution.status ? <span className="completed_checked">delivered</span> : '';
 		const resolutionClass2 = this.props.resolution.paid ? "false" : "";
 		const status2= this.props.resolution.paid ? <span className="completed_paid">paid</span> : '';
+		const status3= this.props.resolution.ready ? <span className="completed_ready">ready</span> : '';
 
 		var single;
 		var listItems;
 		var stringListOfItems=[];
 		var test=this.props.resolution;
 		if(test){
+			test.items=test.items.sort(function(a, b) {
+				    var textA = a.name.toUpperCase();
+				    var textB = b.name.toUpperCase();
+				    if(textA===textB){
+				    	 var textA = a.comments.toUpperCase();
+				    	 var textB = b.comments.toUpperCase();
+				    }
+				    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+				});
 			listItems=test.items.map((resolution,index)=>{
 					return <DeliverOrderSingleItem key={resolution.itemid} 
 					resolution={resolution}
@@ -95,22 +105,34 @@ export default class DeliverOrderSingle extends Component {
 				count_paid=count_paid+1;
 			}		
 		}
-					
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		let orders=<h2>Loading...</h2>;
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			if(pos==="manager" || pos==="waiter" || pos==="assistant"){
+				orders=<div className="cdiv">
+					<input type="checkbox"
+					readOnly={true}
+					id={this.props.resolution._id}
+					checked={this.props.resolution.status}
+					onClick={this.toggleChecked.bind(this)} />
+				</div>
+			}else{
+  				orders=<h2></h2>
+
+			}
+		}
 						
 		
 
 		if(!this.props.resolution.status && this.props.status==="pending" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
-				<input type="checkbox"
-					readOnly={true}
-					id={this.props.resolution._id}
-					checked={this.props.resolution.status}
-					onClick={this.toggleChecked.bind(this)} />
+				{orders}
 				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {" "}
 				order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
 				delivered items : {count_delivered}/{collection[0].items.length} {" "}
 				paid items {count_paid}/{collection[0].items.length}
-				{status}{status2}</label>
+				{status3}{status}{status2}</label>
 				{this.state.showPopup ? 
           			<div className="testul">
           			{listItems}
@@ -121,16 +143,12 @@ export default class DeliverOrderSingle extends Component {
 		}
 		if(this.props.resolution.status && this.props.status==="delivered" && this.props.resolution.completed===false){
 			single=<div className="wrapper" >
-				<input type="checkbox"
-					readOnly={true}
-					id={this.props.resolution._id}
-					checked={this.props.resolution.status}
-					onClick={this.toggleChecked.bind(this)} />
+				{orders}
 				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {" "}
 				order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
 				delivered items : {count_delivered}/{collection[0].items.length} {" "}
 				paid items {count_paid}/{collection[0].items.length}
-				{status}{status2}</label>
+				{status3}{status}{status2}</label>
 				{this.state.showPopup ? 
           			<div className="testul">
           			{listItems}

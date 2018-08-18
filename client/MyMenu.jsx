@@ -32,20 +32,34 @@ export default class MyMenu extends TrackerReact(React.Component) {
 	}
 
 	render() {
-		return (
-			<div className="resolutions">
-				<nav className="snip1491">
-				<li className="current"><a href="/mymenu">My Menu</a></li>
-				<li><a href="/prepareorders">Prepare Orders</a></li>				
-				</nav>
-				<button className="snip1086 yellow" onClick={this.togglePopup.bind(this)}><span>new entry</span><i className="ion-compose"></i></button>
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		let orders=<h2>Loading...</h2>;
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			if(pos==="manager" || pos==="cook"){
+				orders=<div>
+					<button className="snip1086 yellow" onClick={this.togglePopup.bind(this)}><span>new entry</span><i className="ion-compose"></i></button>
 				{this.state.showPopup ? 
           			<NewEntry
           				closePopup={this.togglePopup.bind(this)}
            			/>
           			: null
        			}
-       			<MenuResolution/>					   
+       			<MenuResolution/>
+				</div>
+			}else{
+  				orders=<h2> Sorry you have no rights to configure the Menu</h2>
+
+			}
+		}
+
+		return (
+			<div className="resolutions">
+				<nav className="snip1491">
+				<li className="current"><a href="/mymenu">Menu</a></li>
+				<li><a href="/prepareorders">Prepare</a></li>				
+				</nav>
+				{orders}				   
 			</div>
 		)
 	}

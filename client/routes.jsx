@@ -13,6 +13,27 @@ import PayOrders from './PayOrders.jsx';
 import CompletedOrders from './CompletedOrders.jsx';
 import ReadyOrders from './ReadyOrders.jsx';
 
+
+Accounts.onLogin(function(){
+	FlowRouter.route('/', {
+	action() {
+		mount(MainLayout, {
+			content: (<Resolutions />)
+			})
+		}
+});
+});
+Accounts.onLogout(function(){
+	FlowRouter.route('/', {
+	action() {
+		mount(MainLayout, {
+			content: (<Resolutions />)
+			})
+		}
+});
+});
+
+
 FlowRouter.route('/', {
 	action() {
 		mount(MainLayout, {

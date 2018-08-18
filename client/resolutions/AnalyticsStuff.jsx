@@ -111,7 +111,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 				<h3>{this.props.name}</h3>
 				<li>
 					<a> Total items </a><button onClick={this.togglePopup.bind(this)}>delivered</button>  <a> : {countstatus.reduce(add,0)} </a>
-					<a> Total </a><button onClick={this.togglePopup2.bind(this)}>paid</button> <a> : {countpaid.reduce(add,0)}e </a>
+					<a> Total </a><button onClick={this.togglePopup2.bind(this)}>paid</button> <a> : {countpaid.reduce(add,0)}€ </a>
 				</li>
 				{this.state.showPopup ?
 					<div>

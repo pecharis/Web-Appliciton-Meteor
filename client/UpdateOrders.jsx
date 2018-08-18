@@ -14,6 +14,7 @@ export default class UpdateOrders extends TrackerReact(React.Component) {
 			subscription:{
 				mycollections: Meteor.subscribe("allResolutions"),
 				currOrders: Meteor.subscribe("allOrders"),
+				findshops: Meteor.subscribe("allshops"),
 				showPopup: false
 			}
 		}		
@@ -33,6 +34,9 @@ export default class UpdateOrders extends TrackerReact(React.Component) {
 	mycollections() {
 		return Mcollections.find().fetch();
 	}
+	findshops(shop){
+		return Shop.find({"shop": shop}).fetch();
+	}
 
 	currOrders() {
 		return currOrder.find().fetch();
@@ -40,40 +44,55 @@ export default class UpdateOrders extends TrackerReact(React.Component) {
 
 	render() {
 
-		var distinctEntries = _.uniq(currOrder.find({
-			$or: [ {paid : false}, {status : false} ]}, 
-			{sort: {table_number: 1}, fields: {table_number: true}
-			}).fetch().map(function(x) {
-   			 return x.table_number;
-			}), true);	
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		let orders=<h2>Loading...</h2>;
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			var shop=this.findshops(obj[0].profile.shop);
+			if(shop[0]){
+				var distinctEntries = _.uniq(currOrder.find({
+					$or: [ {paid : false}, {status : false} ]}, 
+					{sort: {table_number: 1}, fields: {table_number: true}
+					}).fetch().map(function(x) {
+		   			 return x.table_number;
+					}), true);	
 
-		var tables_numbers=[];
-		for (let i = 0; i <= 100; ++i) {
-			if(distinctEntries.includes(i)){
-				tables_numbers[i]={ value:i, label: i };
-			}else{}	 
+				var tables_numbers=[];
+				for (let i = 1; i <= shop[0].tables; ++i) {
+					if(distinctEntries.includes(i)){
+						tables_numbers[i]={ value:i, label: i };
+					}else{}	 
+				}
+				if(pos==="manager" || pos==="waiter"){
+					orders=<div>
+						<ReactCSSTransitionGroup
+						component="div"
+						transitionName="route"
+						transitionEnterTimeout={600}
+						transitionAppearTimeout={600}
+						transitionLeaveTimeout={400}
+						transitionAppear={true}>
+	       				<OrderResolution 
+	       					nav_option="update"
+	       					table_numbers={tables_numbers}/>					   
+					</ReactCSSTransitionGroup>
+					</div>
+				}else{
+	  				orders=<h2> Sorry you have no rights to update orders</h2>
+	  			}
+			}
 		}
 		
 		return (
 			<div className="resolutions">
   			<nav className="snip1490">
-				<li><a href="/orders">  New Order  </a></li>
+				<li><a href="/orders">New</a></li>
 				<li className="current"><a href="/update_orders">Update</a></li>
 				<li><a href="/deliver_orders">Deliver</a></li>
 				<li><a href="/pay_orders">Pay</a></li>
 				<li><a href="/completed_orders">completed</a></li>
 			</nav>	
-			<ReactCSSTransitionGroup
-				component="div"
-				transitionName="route"
-				transitionEnterTimeout={600}
-				transitionAppearTimeout={600}
-				transitionLeaveTimeout={400}
-				transitionAppear={true}>
-       			<OrderResolution 
-       			nav_option="update"
-       			table_numbers={tables_numbers}/>					   
-			</ReactCSSTransitionGroup>
+			{orders}
 			</div>
 		)
 	}

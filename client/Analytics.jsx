@@ -74,15 +74,17 @@ export default class Analytics extends TrackerReact(React.Component) {
 				})
 			}
 			if(selectedOption.value==="stuff"){
-				var test2=Meteor.users.find().fetch();
+				var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+				var test2=Meteor.users.find({"profile.shop" : obj[0].profile.shop}).fetch();
 				items=test2.map((test,index)=>{
 					return <AnalyticsStuff	key={index} 
-						name={test.emails[0].address}/>
+						name={test.username}/>
 						//console.log(test.emails[0].address);
 				})
 			}
 			if (selectedOption.value==="event log"){
-				items= <AnalyticsEvents/>
+				var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+				items= <AnalyticsEvents shop={obj[0].profile.shop}/>
 			}
 		}
 		return (

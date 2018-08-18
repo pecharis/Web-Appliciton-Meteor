@@ -5,10 +5,10 @@ import { Meteor } from 'meteor/meteor'
 export default class DeliverOrderSingleItem extends Component {
 
 	toggleChecked() {
-		var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;
+		var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
 		const test=Meteor.call('toggleReadyOrderItem',
 			this.props.collection,this.props.resolution.ready,by,this.props.resolution.name,
-			this.props.resolution.itemid, function (err, res) {
+			this.props.resolution.itemid,false, function (err, res) {
 			if(err){
       			console.log(err);
    			 }else{
@@ -25,13 +25,13 @@ export default class DeliverOrderSingleItem extends Component {
 		const str_id="order_id " + this.props.collection._id + "item_id" + this.props.resolution.itemid;		
 
 		return (
-			<div className={resolutionClass}>
+			<div className="wholediv">
 				<input type="checkbox"
 					readOnly={true}
 					id={str_id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<label htmlFor={str_id}>name : {this.props.resolution.name} </label>
+				<label className ="inlinediv" htmlFor={str_id}>name : {this.props.resolution.name} comments : {this.props.resolution.comments}</label>
 				{status}
 				</div>
 				)

@@ -37,25 +37,37 @@ export default class CurrentOrder extends TrackerReact(React.Component) {
 			currOrder=<h2>Choose table first :</h2>
 			listItems= <h2> </h2>
 		}else{
-			currOrder=<button className="snip1339" onClick={this.togglePopup.bind(this)}>Table Number {Session.get('table_number')} Total {Session.get('total')}e</button>
+			currOrder=<button className="snip1086 red3" onClick={this.togglePopup.bind(this)}>Table Number {Session.get('table_number')} Total {Session.get('total')}€</button>
 			listItems= <h2>No items yet </h2>		
 		if(test && test.items){
 				var array=test.items;
 				var flags = [], output = [], l = array.length, i;
 				for( i=0; i<l; i++) {
-  				 	if( flags[array[i].name]) continue;
+  				 	if( flags[array[i].name] && flags[array[i].comments] ) continue;
    					flags[array[i].name] = true;
-    				output.push(array[i].name);
+   					flags[array[i].comments] = true;
+    				output.push({name: array[i].name,comm: array[i].comments});
+    				
 				}				
-				output=output.sort();
-				listItems=output.map((resolution)=>{
-					var res=LocalOrder.findOne({ "items.name" : resolution }).items;
+				output=output.sort(function(a, b) {
+				    var textA = a.name.toUpperCase();
+				    var textB = b.name.toUpperCase();
+				    if(textA===textB){
+				    	 var textA = a.comm.toUpperCase();
+				    	 var textB = b.comm.toUpperCase();
+				    }
+				    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+				});
+				console.log(output);
+				listItems=output.map((resolution,index)=>{
+					var res=LocalOrder.findOne({ "items.name" : resolution.name }).items;
 					var res2=res.filter(obj=>{
-						return obj.name===resolution
+						return obj.name===resolution.name
 					});
-					return <OrderResolutionSingle key={resolution} 
+					return <OrderResolutionSingle key={index} 
 					resolution={res2[0]}
-					name={resolution}
+					name={resolution.name}
+					comments={resolution.comm}
 					callback={this.updateNow} />
 				
 				})
@@ -66,7 +78,7 @@ export default class CurrentOrder extends TrackerReact(React.Component) {
 		}
 
 		return(
-			<div>	
+			<div className="belowdiv">	
 				{currOrder}
 				{this.state.showPopup ? 
 					<div>

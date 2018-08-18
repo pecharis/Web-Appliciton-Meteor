@@ -18,10 +18,10 @@ export default class Popup extends React.Component {
 				if(error) {
 					Bert.alert('Please login before submitting','danger', 'fixed-top','fa-frown-o');
 				}else {
-					this.refs.resolution.value = "";
-					this.refs.resolution1.value= "";
-					this.refs.resolution2.value= "";
-					this.refs.resolution3.value= "";
+				//	this.refs.resolution.value = "";
+				//	this.refs.resolution1.value= "";
+				//	this.refs.resolution2.value= "";
+				//	this.refs.resolution3.value= "";
 				}
 			});
 		}		
@@ -55,7 +55,7 @@ export default class Popup extends React.Component {
 						step="0.01"
 						ref="resolution2"
 						placeholder="Price" />
-					<h3>Ingredients : </h3>
+		<h3>Ingredients : </h3>
 					<input 
 						type="text"
 						ref="resolution3"

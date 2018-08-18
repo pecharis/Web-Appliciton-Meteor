@@ -12,7 +12,6 @@ export default class PayOrders extends TrackerReact(React.Component) {
 
 		this.state = {
 			subscription:{
-				mycollections: Meteor.subscribe("userResolutions"),
 				currOrders: Meteor.subscribe("allOrders"),
 				showPopup: false
 			}
@@ -26,7 +25,7 @@ export default class PayOrders extends TrackerReact(React.Component) {
 		for( i=0; i<l; i++) {
 			if (array[i].itemid === itemid && !array[i].paid) {
       		 	array[i].paid = !array[i].paid;
-      		 }
+      		}
     		if( flags[array[i].paid]) continue;
     			flags[array[i].paid] = true;
     		output.push(array[i].paid);
@@ -37,27 +36,10 @@ export default class PayOrders extends TrackerReact(React.Component) {
 				Meteor.call('toggleCompleteOrder',this.currOrderId(id)[0]);
 			}
 		}
-
-
 		this.setState({'update_now':'yes'});
 	}
-
-  	togglePopup() {
-   		this.setState({
-      		showPopup: !this.state.showPopup
-   		});
-	}
-
-	mycollections() {
-		return Mcollections.find().fetch();
-	}
-
 	componentWillUnmount() {
-		this.state.subscription.mycollections.stop();
 		this.state.subscription.currOrders.stop();
-		LocalOrder.clear();
-		Session.set('table_number','');
-		Session.set('total',0);
 	}
 
 	currOrderId(id){
@@ -69,17 +51,11 @@ export default class PayOrders extends TrackerReact(React.Component) {
 	}
 
 	render() {
-
-		var distinctEntries = _.uniq(currOrder.find({completed : false}, 
-			{sort: {table_number: 1}, fields: {table_number: true}
-			}).fetch().map(function(x) {
-   			 return x.table_number;
-			}), true);	
 		
 		return (
 			<div className="resolutions">
   			<nav className="snip1490">
-				<li><a href="/orders">  New Order  </a></li>
+				<li><a href="/orders">New</a></li>
 				<li><a href="/update_orders">Update</a></li>
 				<li><a href="/deliver_orders">Deliver</a></li>
 				<li className="current"><a href="/pay_orders">Pay</a></li>

@@ -31,10 +31,6 @@ export default class CompletedOrders extends TrackerReact(React.Component) {
 	currOrders() {
 		var date = new Date()
 		var today = moment(date).format("MM.DD.YYYY");
-		var now = new Date();
-		var anHourAgo = new Date(now.setHours(now.getHours - 1));
-
-		console.log(new Date().getHours());
 		return currOrder.find({'last_modified':{$gte: new Date(today)}}).fetch();
 	}
 
@@ -43,7 +39,7 @@ export default class CompletedOrders extends TrackerReact(React.Component) {
 		return (
 			<div className="resolutions">
   			<nav className="snip1490">
-				<li><a href="/orders">  New Order  </a></li>
+				<li><a href="/orders">New</a></li>
 				<li><a href="/update_orders">Update</a></li>
 				<li><a href="/deliver_orders">Deliver</a></li>
 				<li><a href="/pay_orders">Pay</a></li>

@@ -9,7 +9,7 @@ export const MainLayout = ({content}) => (
 
 	<div className="main-layout">
 		<header>
-			<h2>Business Life of Tomorrow</h2>
+			<h2>Business Life</h2>
 			<nav>
 				<a href="/">Home</a>
 				<a href="/analytics">Analytics</a>

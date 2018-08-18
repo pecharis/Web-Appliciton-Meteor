@@ -54,7 +54,8 @@ light-red = #CA5765
 pink = #CF256D
 orange = #E8846B
 
- 
+
+
 z = {
     neg: -7,
     lowest: 1,
@@ -88,6 +89,10 @@ body
     background light-grey
     padding: 70px 0 150px
     font-family: 'Open Sans', sans-serif
+    min-width:400px
+    @media screen and (max-width: 600px)
+      background blue
+      min-width:400px
  
 header
     color #FFF
@@ -115,9 +120,16 @@ header
             border-bottom 4px solid transparent
             trans()
             + a
-                margin-left: 30px
+                margin-left: 40px 
+                @media screen and (max-width: 600px)
+                  margin-left: 20px
+                @media screen and (max-width: 500px)
+                  margin-left: 10px
             &:hover
                 border-color teal
+    @media screen and (max-width: 710px) 
+      h2
+        display none             
  
  
 p
@@ -325,7 +337,7 @@ input:-ms-input-placeholder
     background teal
     border-radius 5px
     padding 5px
-    margin-left 80px
+    margin-left 20px
     animation complete 0.6s ease
     font-size 1em
 
@@ -335,7 +347,7 @@ input:-ms-input-placeholder
     display: inline-block;
     border-radius 5px
     padding 5px
-    margin-left 80px
+    margin-left 20px
     animation complete 0.6s ease
     font-size 1em  
 
@@ -345,7 +357,7 @@ input:-ms-input-placeholder
     background teal
     border-radius 5px
     padding 5px
-    margin-left 80px
+    margin-left 20px
     animation complete 0.6s ease
     font-size 1em      
    
@@ -417,6 +429,7 @@ input:-ms-input-placeholder
   right: 0;
 }
 
+
 .snip1339 {
   font-family: 'Raleway', Arial, sans-serif;
   border: none;
@@ -428,7 +441,7 @@ input:-ms-input-placeholder
   display: inline-block;
   margin: 15px 30px;
   text-transform: uppercase;
-  line-height: 2.7em;
+  line-height: 4.7em;
   font-weight: 600;
   font-size: 1em;
   outline: none;
@@ -436,6 +449,13 @@ input:-ms-input-placeholder
   font-size: 16px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
+}
+@media screen and (max-width: 710px){
+  .snip1339 {
+  line-height: 2.7em;
+  font-weight: 600;
+  font-size: 1.1em;
+  }
 }
 .snip1339:after {
   content: "";
@@ -485,6 +505,14 @@ input:-ms-input-placeholder
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
 }
 
+@media screen and (max-width: 710px){
+  .snip1490 a {
+  font-size:20px !important;
+   height:3em;
+
+  }
+}
+
 .snip1490 *,
 .snip1490 *:before {
   -webkit-transition: all 0.3s ease;
@@ -516,7 +544,7 @@ input:-ms-input-placeholder
 .snip1490 a {
   color: #000000;
   display: block;
-  padding: .7em 1em 1em;
+  padding: .7em 0.1em 1em;
   position: relative;
   text-decoration: none;
 }
@@ -787,14 +815,40 @@ input:-ms-input-placeholder
     border: 1px solid #ddd;
     padding: 8px;
 }
-
+.divprofile {
+    display: inline-block;
+    margin: 0
+    vertical-align: top;
+    width : 30%;
+}
+.divshop {
+    display: inline-block;
+    margin: 0
+    vertical-align: top;
+    width : 70%;
+}
 .leftdiv {
     display: inline-block;
     margin: 0
     vertical-align: top;
     width : 50%;
 }
-
+.leftdiv3 {
+    display: inline-block;
+    padding: 0px 20px;
+    height: 100%;
+    margin:center;
+    vertical-align: top;
+    width : 100%;
+}
+.cdiv {
+    display: inline-block;
+    padding: 0px 0px;
+    height: 100%;
+    margin:center;
+    
+    width : 3%;
+}
 .leftdiv2 {
     display: inline-block;
     padding: 0px 40px;
@@ -802,8 +856,55 @@ input:-ms-input-placeholder
     margin:top;
     vertical-align: top;
     border: 1px solid #ddd;
-    width : 50%;
+    width : 80%;
     background-color: white;
+}
+.stuffdiv {
+    display: inline-block;
+    padding: 0px 0px;
+    height: 100%;
+    margin:top;
+    vertical-align: top;
+    border: 2px solid #ddd;
+    width : 100%;
+    background-color: grey;
+}
+.stuffctitlediv{
+     display: inline-block;
+     text-align: Center;
+     padding: 0px 0px;
+     width : 100%;
+      background-color: maroon;
+     border: 2px solid black;
+}
+.stufftitlediv{
+     display: inline-block;
+     padding: 0px 0px;
+     width : 100%;
+     border: 2px solid black;
+  
+}
+.stuffsinglediv{
+    display: inline-block;
+    padding: 0px 0px;
+    height: 100%;
+    margin:top;
+    text-align: Center;
+    vertical-align: top;
+    border: 2px solid black;
+    border-bottom-style:none;
+    border-left-style:none;
+    border-right-style:none;
+    width : 100%;
+    background-color: white;
+}
+.leftdiv4 {
+    display: inline-block;
+    padding: 0px 40px;
+    height: 100%;
+    margin:top;
+    vertical-align: center;
+    width : 20%;
 }
 
 .inlinediv {
@@ -862,9 +963,8 @@ input:-ms-input-placeholder
 }
 
 .menu-body {
-  max-width: 680px;
   margin: 0 auto;
-  display: block;
+  display: inline-block;
   color: rgb(92, 92, 92);
 }
  
@@ -885,17 +985,19 @@ input:-ms-input-placeholder
  
 .menu-item {
   margin: 35px 0;
-  font-size: 18px;
+  font-size: 20px;
 }
  
 .menu-item-name{
   font-family: helvetica;
+  margin: 0px 20px; 
   font-weight: bold;
   border-bottom: 2px dotted rgb(213, 213, 213);
-  width   : 50%;
+  width   :70%;
 }
  
 .menu-item-description {
+  margin: 0px 20px; 
   font-style: italic;
   font-size: .9em;
   line-height: 1.5em;
@@ -905,14 +1007,17 @@ input:-ms-input-placeholder
   float: right;
   font-weight: bold;
   font-family: arial;
-  margin-top: -45px;
+  margin-top: -50px;
 }
 
 .menu-buttons{
+  display: inline-block;
   float: right;
+  width : 30%;
+  font-size: 20px;
   font-weight: bold;
   font-family: arial;
-  margin-top: -62px;
+  margin-top: -75px;
 }
 
 // The main container element
@@ -1005,7 +1110,7 @@ button.snip1086 {
   cursor: pointer;
   padding: 10px 40px;
   display: inline-block;
-  margin: 15px 30px;
+  margin: 5px 30px;
   text-transform: uppercase;
   line-height: 1.5em;
   font-weight: 500;
@@ -1084,7 +1189,24 @@ button.snip1086.red {
 button.snip1086.yellow {
   background-color: #a85913;
 }
+button.snip1086.green {
+  background-color: #67FF8B;
+  color:black;
+  font-size: 2.5em;
+  padding 0.1em 1em;
 
+}
+button.snip1086.red2 {
+  background-color: #962d22;
+  font-size: 2.5em;
+  padding 0.1em 1em;
+}
+button.snip1086.red3 {
+  width:100%
+  background-color: #962d22;
+  font-size: 2.5em;
+  padding 0.1em 0.1em;
+}
 
 .testbody{
   font-family: "Roboto", "Sans Serif";
@@ -1109,7 +1231,7 @@ button.snip1086.yellow {
   display: inline-block;
   cursor: pointer;
   padding: 20px;
-  width: 98%;
+  width: 95%;
   border: 1px solid #fff;
   border-bottom: none;
 }

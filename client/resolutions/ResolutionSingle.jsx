@@ -9,7 +9,6 @@ export default class ResolutionSingle extends Component {
 		Meteor.call('deleteResolution', this.props.resolution);
 	}
 	updateResolution() {
-		//Meteor.call('updateResolution', this.props.resolution);
 		var txt;
     	var person = prompt("Name:", this.props.resolution._id);
     	if (person == null || person == "") {
@@ -32,13 +31,13 @@ export default class ResolutionSingle extends Component {
 					onClick={this.toggleChecked.bind(this)} />
 				<a jref={`/resolutions/${this.props.resolution._id}`}>{this.props.resolution._id}</a>
 				<a>   </a>
-				<a>{this.props.resolution.price} e</a>
+				<a>{this.props.resolution.price} €</a>
 				{status}
 				<button  className="btn-cancel"
 					onClick={this.deleteResolution.bind(this)}>
 					&times;
 				</button>
-				<button type="button" className="btn-cancel"
+				<button type="button" className="btn-text"
 					onClick={this.updateResolution.bind(this)}>Upd
 				</button>
 			</li>

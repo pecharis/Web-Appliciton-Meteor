@@ -76,21 +76,14 @@ export default class ReadyOrders extends TrackerReact(React.Component) {
 			}).fetch().map(function(x) {
    			 return x.table_number;
 			}), true);	
-		
-		return (
-			<div className="resolutions">
-				<nav className="snip1491">
-					<li ><a href="/mymenu">My Menu</a></li>
-					<li className="current"><a href="/prepareorders">Prepare Orders</a></li>				
-				</nav>
-				<h2>Pending Orders</h2>
-				<ReactCSSTransitionGroup
-					component="div"
-					transitionName="route"
-					transitionEnterTimeout={600}
-					transitionAppearTimeout={600}
-					transitionLeaveTimeout={400}
-					transitionAppear={true}>
+
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		let orders=<h2>Loading...</h2>;
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			if(pos==="manager" || pos==="cook" || pos==="assistant"){
+				orders=<div>
+					<h2 className="centerdiv">Pending Orders</h2>
 					{this.currOrders().map( (resolution)=>{
 							return <ReadyOrderSingle 
 							key={resolution._id} 
@@ -98,15 +91,7 @@ export default class ReadyOrders extends TrackerReact(React.Component) {
 							ready="false"
 							callback={this.updateNow} />
 					})}				   
-				</ReactCSSTransitionGroup>
-				<h2>Ready Orders</h2>
-				<ReactCSSTransitionGroup
-					component="div"
-					transitionName="route"
-					transitionEnterTimeout={600}
-					transitionAppearTimeout={600}
-					transitionLeaveTimeout={400}
-					transitionAppear={true}>
+				<h2 className="centerdiv">Ready Orders</h2>
 					{this.currOrders().map( (resolution)=>{
 						return <ReadyOrderSingle 
 						key={resolution._id} 
@@ -114,7 +99,20 @@ export default class ReadyOrders extends TrackerReact(React.Component) {
 						ready="true"
 						callback={this.updateNow} />
 					})}				   
-				</ReactCSSTransitionGroup>
+				</div>
+			}else{
+  				orders=<h2> Sorry you have no rights to configure the Menu</h2>
+
+			}
+		}
+		
+		return (
+			<div className="resolutions">
+				<nav className="snip1491">
+					<li ><a href="/mymenu">Menu</a></li>
+					<li className="current"><a href="/prepareorders">Prepare</a></li>				
+				</nav>
+				{orders}
 			</div>
 		)
 	}

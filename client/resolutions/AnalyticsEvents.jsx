@@ -9,14 +9,16 @@ export default class AnalyticsEvents extends TrackerReact(React.Component) {
 		super();
 		this.state = {
 			subscription:{
-				alleventlogs: Meteor.subscribe("alleventlogs")
+				deletelastday: Meteor.subscribe("alleventlogs")
 			}
 		}	
 	}
 	alleventlogs() {
 		return Eventlog.find({},{sort: {date: -1}}).fetch();
 	}
-
+	deletelastday(){
+		Meteor.call('deleteAllBeforeToday',this.props.shop);
+	}
 	render(){
 		var test=this.alleventlogs();
 		var items=<a></a>
@@ -25,7 +27,10 @@ export default class AnalyticsEvents extends TrackerReact(React.Component) {
 				//console.log(obj.label);
 			})
 		return(
-				<div>{items}</div>
+				<div>
+					<button	className="snip1086 blue" onClick={this.deletelastday.bind(this)}>
+							<span>deletec all events apart from last day's</span><i className="ion-arrow-right-c"></i></button>
+				{items}</div>
 		)
 	}	
 }
