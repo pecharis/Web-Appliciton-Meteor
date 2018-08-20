@@ -36,7 +36,7 @@ export default class MyMenu extends TrackerReact(React.Component) {
 		let orders=<h2>Loading...</h2>;
 		if(obj[0]){
 			var pos=obj[0].profile.position;
-			if(pos==="manager" || pos==="cook"){
+			if((pos==="manager" || pos==="cook") && obj[0].profile.status==="accepted"){
 				orders=<div>
 					<button className="snip1086 yellow" onClick={this.togglePopup.bind(this)}><span>new entry</span><i className="ion-compose"></i></button>
 				{this.state.showPopup ? 

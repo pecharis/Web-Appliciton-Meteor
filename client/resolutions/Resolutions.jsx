@@ -44,6 +44,9 @@ export default class Resolutions extends TrackerReact(React.Component) {
 	componentWillUnmount() {
 		this.state.subscription.findshops.stop();
 	}	
+	setVar(){
+		Session.set('Meteor.loginButtons.dropdownVisible',true);
+	}
 
 	checking(){
 		var curr;
@@ -104,6 +107,8 @@ export default class Resolutions extends TrackerReact(React.Component) {
 				}
 			}
 			
+		}else{
+			curr=<div><h2>Please sign in or create account to continue</h2><button onClick={this.setVar}>sign up</button></div>
 		}
 		return curr;
 	}

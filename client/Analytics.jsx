@@ -44,7 +44,20 @@ export default class Analytics extends TrackerReact(React.Component) {
 	render() {
 		const { selectedOption } = this.state;
 		var items;
+		var sel;
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			if(pos==="manager" && obj[0].profile.status==="accepted"){
+				sel=<div><p>choosing time</p>
+				<Select classNamePrefix="react-select"
+					options={options}
+				    value={selectedOption}
+				    onChange={this.handleChange}				        
+				/></div>
 
+			}else{sel=<h2>you need to be a manager to access this page</h2>}
+		}
 		if(selectedOption){
 			if (selectedOption.value==="items"){
 				var localitems=[];
@@ -96,12 +109,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 				transitionLeaveTimeout={400}
 				transitionAppear={true}>
 				<h1>Analytics</h1>
-				<p>choosing time</p>
-				<Select classNamePrefix="react-select"
-					options={options}
-				    value={selectedOption}
-				    onChange={this.handleChange}				        
-				/>
+				{sel}
 				{items}
 			</ReactCSSTransitionGroup>
 		)
