@@ -128,13 +128,17 @@ export default class DeliverOrderSingle extends Component {
 		if(!this.props.resolution.status && this.props.status==="pending" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
 				{orders}
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {" "}
-				order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-				delivered items : {count_delivered}/{collection[0].items.length} {" "}
-				paid items {count_paid}/{collection[0].items.length}
-				{status3}{status}{status2}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table : {this.props.resolution.table_number}
+				{" "} delivered items : {count_delivered}/{collection[0].items.length} 
+				{status3}{status}{status2}</h3></label> 
+				
 				{this.state.showPopup ? 
           			<div className="testul">
+          			<div className="centerdiv2">
+          			<h3>order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}				
+						paid items {count_paid}/{collection[0].items.length}
+					</h3>
+					</div>
           			{listItems}
           			</div>
           			: null
@@ -144,13 +148,16 @@ export default class DeliverOrderSingle extends Component {
 		if(this.props.resolution.status && this.props.status==="delivered" && this.props.resolution.completed===false){
 			single=<div className="wrapper" >
 				{orders}
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {" "}
-				order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-				delivered items : {count_delivered}/{collection[0].items.length} {" "}
-				paid items {count_paid}/{collection[0].items.length}
-				{status3}{status}{status2}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table : {this.props.resolution.table_number}
+				{" "} delivered items : {count_delivered}/{collection[0].items.length} 
+				{status3}{status}{status2}</h3></label> 
 				{this.state.showPopup ? 
           			<div className="testul">
+          			<div className="centerdiv2">
+          			<h3>order taken at {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}				
+						paid items {count_paid}/{collection[0].items.length}
+					</h3>
+					</div>
           			{listItems}
           			</div>
           			: null

@@ -109,7 +109,7 @@ export default class ReadyOrderSingle extends Component {
 					id={this.props.resolution._id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} remaining total : {total}€</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table number : {this.props.resolution.table_number} remaining total : {total}€</h3></label>
 				{this.state.showPopup ? 
           			<div className="testul">
           			{listItems}
@@ -129,7 +129,7 @@ export default class ReadyOrderSingle extends Component {
 					id={this.props.resolution._id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {status}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table number : {this.props.resolution.table_number} {status}</h3></label>
 				{this.state.showPopup ? 
           			<div className="testul">
           			{listItems}

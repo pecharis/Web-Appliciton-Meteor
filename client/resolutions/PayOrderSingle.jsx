@@ -134,16 +134,19 @@ export default class PayOrderSingle extends Component {
 		if(!this.props.resolution.paid && this.props.paid==="false" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
 				{orders}
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}>			
-				table number : {this.props.resolution.table_number} {" "} 
-				time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-				delivered items {count_delivered}/{collection[0].items.length} {" "}
-				paid items {count_paid}/{collection[0].items.length} {" "}
-				paid total : {collection[0].total-total}€ {" "}
-				remaining total : {total}€ {status}
-				{status2}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3>		
+				table : {this.props.resolution.table_number} {" "} paid items {count_paid}/{collection[0].items.length}
+			    {status} {status2} </h3></label>
 				{this.state.showPopup ? 
           			<div className="testul">
+          			<div className="centerdiv2">
+          				<h3>
+		          		time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
+						delivered items {count_delivered}/{collection[0].items.length} {" "}				
+						paid total : {collection[0].total-total}€ {" "}
+						remaining total : {total}€
+						</h3>
+					</div>
           			{listItems}
           			</div>
           			: null
@@ -153,14 +156,19 @@ export default class PayOrderSingle extends Component {
 		if(this.props.resolution.paid && this.props.paid==="true" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
 				{orders}
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}>
-				table number : {this.props.resolution.table_number} {" "} 
-				time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-				delivered items {count_delivered}/{collection[0].items.length} {" "}
-				paid total : {collection[0].total-total}€ {" "}
-				{status2}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3>		
+				table : {this.props.resolution.table_number} {" "} paid items {count_paid}/{collection[0].items.length}
+			    {status} {status2} </h3></label>
 				{this.state.showPopup ? 
           			<div className="testul">
+          			<div className="centerdiv2">
+          				<h3>
+		          		time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
+						delivered items {count_delivered}/{collection[0].items.length} {" "}				
+						paid total : {collection[0].total-total}€ {" "}
+						remaining total : {total}€
+						</h3>
+					</div>
           			{listItems}
           			</div>
           			: null
