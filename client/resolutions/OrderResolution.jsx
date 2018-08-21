@@ -125,7 +125,6 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 		const { selectedOption } = this.state;
 
 		var select=<div>
-		 		<h2>Table Number : {Session.get('table_number')}</h2>
 				<Select
 					id="table_select"
 					options={tables_numbers}
@@ -133,6 +132,8 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 				    value={selectedOption}
 				    onChange={this.handleChange2.bind(this)}				        
 				/>
+		 		<h2>Current Table Number : {Session.get('table_number')}</h2>
+				
 						</div>
 		return select;
 	}
@@ -190,7 +191,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 		var change_table_number_button=<h2></h2>
 		var cancel_order_completly=<h2></h2>
 		if (flag){	
-			complete_order_button =<button	className="snip1086" 
+			complete_order_button =<button	className="snip1086 black" 
 			onClick={this.addToOrder.bind(this)}>
 			<span>Submit</span><i className="ion-checkmark"></i></button>		
 			cancel_button=<button  
@@ -259,24 +260,25 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 		return(			 	
 			<div>
 				<div className="leftdiv3">
-				{change_table_number_button}						
-				{change_order}				
-				{cancel_order}
-				{cancel_button}
+					{change_table_number_button}						
+					{change_order}				
+					{cancel_order}
+					{cancel_button}
 				</div>
+				{this.state.showPopup ? 
+       					<div className="leftdiv3">
+       						{lele}
+       					</div>
+       					: null
+   					}	
 				<div className="leftdiv2">
 					<CurrentOrder callback={this.updateNow}/>					
 				</div>
 				<div className="leftdiv4">					
 					{complete_order_button}
 					</div>
-				<div className="belowdiv">	
-					{this.state.showPopup ? 
-       					<div>
-       						{lele}
-       					</div>
-       					: null
-   					}										
+				<div>
+														
 					{select_table}					
                     {show_listItems}
 				</div>				   				

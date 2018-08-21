@@ -31,7 +31,7 @@ export default class DeliverOrderSingle extends Component {
 
 			for(var i=0; i<test[0].items.length; i++){
 				if(!test[0].items[i].status){
-					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;
+					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
 					Meteor.call('toggleDeliverOrderItem',
 						test[0],test[0].items[i].status,by,test[0].items[i].name,
 						test[0].items[i].itemid,true, function (err, res) {

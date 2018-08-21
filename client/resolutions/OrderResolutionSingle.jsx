@@ -152,7 +152,7 @@ export default class OrderResolutionSingle extends React.Component {
 			if(this.props.resolution.ingredients){inde=this.props.resolution.ingredients;}else{inde="no ingredients   ";}
 			var comments;
 			if(this.props.comments){comments="  Comments : " + this.props.comments;
-			}else{comments=<button className="snip1086 yellow" onClick={this.addComment.bind(this)}>add comment</button>}
+			}else{comments=<button className="snip1086 yellow" onClick={this.addComment.bind(this)}>comment</button>}
 
 			line=<div className="menu-item">
          			<div className="menu-item-name">

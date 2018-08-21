@@ -32,12 +32,12 @@ export default class DeliverOrderSingleItem extends Component {
 			if(pos==="manager" || pos==="waiter" || pos==="assistant"){
 				orders=<div className="cdiv">
 					<input type="checkbox"
-				className ="inlinediv"
-					readOnly={true}
-					id={str_id}
-					checked={this.props.resolution.status}
-					onClick={this.toggleChecked.bind(this)} />
-				</div>
+						className ="inlinediv"
+						readOnly={true}
+						id={str_id}
+						checked={this.props.resolution.status}
+						onClick={this.toggleChecked.bind(this)} />
+					</div>
 			}else{
   				orders=<h2></h2>
 
@@ -46,7 +46,7 @@ export default class DeliverOrderSingleItem extends Component {
 
 
 		return (
-			<div className="wholediv">
+			<div className="wholediv" onClick={this.toggleChecked.bind(this)}>
 				{orders}
 				<label className ="inlinediv" htmlFor={str_id}><h3>{this.props.number}: {this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments}  {status3}{status}{status2}</h3></label>
 				</div>

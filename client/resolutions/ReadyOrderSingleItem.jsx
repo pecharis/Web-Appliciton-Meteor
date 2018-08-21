@@ -25,14 +25,13 @@ export default class DeliverOrderSingleItem extends Component {
 		const str_id="order_id " + this.props.collection._id + "item_id" + this.props.resolution.itemid;		
 
 		return (
-			<div className="wholediv">
+			<div className="wholediv" onClick={this.toggleChecked.bind(this)} >
 				<input type="checkbox"
 					readOnly={true}
 					id={str_id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<label className ="inlinediv" htmlFor={str_id}>name : {this.props.resolution.name} comments : {this.props.resolution.comments}</label>
-				{status}
+				<label className ="inlinediv" htmlFor={str_id}><h3>name : {this.props.resolution.name} comments : {this.props.resolution.comments} {status}</h3></label>				
 				</div>
 				)
 	}

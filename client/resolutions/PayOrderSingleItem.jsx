@@ -43,7 +43,7 @@ export default class DeliverOrderSingleItem extends Component {
 		}
 
 		return (
-			<div className="wholediv">
+			<div className="wholediv" onClick={this.toggleChecked.bind(this)}>
 				{orders}
 				<label className ="inlinediv" htmlFor={str_id}><h3>name : {this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments} {status}{status2}</h3></label>
 				</div>

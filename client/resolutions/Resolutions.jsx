@@ -19,6 +19,7 @@ export default class Resolutions extends TrackerReact(React.Component) {
 		this.state = {
 			subscription:{
 				findshops: Meteor.subscribe("allshops"),
+				width: window.innerWidth,
 				showPopup: false,
 				showPopup2: false
 			}
@@ -37,12 +38,18 @@ export default class Resolutions extends TrackerReact(React.Component) {
       		showPopup: false
    		});
 	}
+	componentWillMount() {
+ 		 window.addEventListener('resize', this.handleWindowSizeChange);
+	}
+	componentWillUnmount() {
+ 		 window.removeEventListener('resize', this.handleWindowSizeChange);
+ 		 this.state.subscription.findshops.stop();
+	}
+	handleWindowSizeChange = () => {
+ 		 this.setState({ width: window.innerWidth });
+		};
 	findshops(shop){
 		return Shop.find({"shop": shop}).fetch();
-	}
-
-	componentWillUnmount() {
-		this.state.subscription.findshops.stop();
 	}	
 	setVar(){
 		Session.set('Meteor.loginButtons.dropdownVisible',true);
@@ -114,7 +121,14 @@ export default class Resolutions extends TrackerReact(React.Component) {
 	}
 
 	render() {		
-		var by=this.checking();		
+		var by=this.checking();	
+		 const { width } = this.state;
+ 		 const isMobile = width <= 1080;	
+ 		 if(isMobile){
+ 		 	console.log("mobile");
+ 		 }else{
+ 		 	console.log("des");
+ 		 }
 		return(
 			<div>{by}
 			{this.state.showPopup ? 

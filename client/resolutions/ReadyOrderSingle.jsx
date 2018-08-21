@@ -29,7 +29,7 @@ export default class ReadyOrderSingle extends Component {
 
 			for(var i=0; i<test[0].items.length; i++){
 				if(!test[0].items[i].ready){
-					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;
+					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].usename;
 					Meteor.call('toggleReadyOrderItem',
 						this.props.resolution,test[0].items[i].ready,by,test[0].items[i].name,
 						test[0].items[i].itemid,true, function (err, res) {
@@ -129,15 +129,14 @@ export default class ReadyOrderSingle extends Component {
 					id={this.props.resolution._id}
 					checked={this.props.resolution.ready}
 					onClick={this.toggleChecked.bind(this)} />
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number}</label>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}> table number : {this.props.resolution.table_number} {status}</label>
 				{this.state.showPopup ? 
           			<div className="testul">
           			{listItems}
           			</div>
           			: null
        			}
-				<a>   </a>
-				{status}
+				
 				
 			
 			</div>

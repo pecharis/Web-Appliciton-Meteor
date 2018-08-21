@@ -78,7 +78,7 @@ export default class CurrentOrder extends TrackerReact(React.Component) {
 		}
 
 		return(
-			<div className="belowdiv">	
+			<div>	
 				{currOrder}
 				{this.state.showPopup ? 
 					<div>
