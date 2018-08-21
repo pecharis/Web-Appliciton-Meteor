@@ -113,7 +113,7 @@ Meteor.methods({
 	},
 	toggleResolution(resolution) {
 		check(resolution, Object);
-		if(Meteor.userId()!== resolution.user){
+		if(!Meteor.userId()){
 			throw new Meteor.Error('not-authorized');
 		}
 		Mcollections.update(resolution._id, {

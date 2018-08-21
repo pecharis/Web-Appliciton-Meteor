@@ -35,6 +35,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
   			}
   		}
   		this.handleChange = (selectedOption) => {
+  			console.log(selectedOption);
     		this.setState({ selectedOption });
     		LocalOrder.clear();
     		Session.set('total',0);
@@ -243,6 +244,14 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 			var options = this.props.table_numbers.slice();
 			options = options.filter(function(n){ return n != undefined });
 			select_table=this.select_table(1,options);
+			show_listItems=options.map( (resolution)=>{
+				//console.log(resolution.value);
+				return<button className="tablesbtn"
+					key={resolution.value}
+					value={resolution}
+				    onClick={() => this.handleChange(resolution)}>{resolution.value}
+				    </button>
+			})
 		}
 		else{	
 			show_listItems=listItems
