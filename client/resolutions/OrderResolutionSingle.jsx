@@ -54,7 +54,7 @@ export default class OrderResolutionSingle extends React.Component {
 			var lastitemValue = LocalOrder.find().fetch()[0].lastitem;
 			LocalOrder.update({ table_number : Session.get('table_number')},
 			{$set : { table_number : Session.get('table_number'),
-					status :  LocalOrder.find().fetch()[0].status,
+					status :  false,
 					paid :  false,
 					ready :  false,
 					completed :  false,
