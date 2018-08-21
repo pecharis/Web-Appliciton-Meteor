@@ -30,8 +30,8 @@ export default class DeliverOrderSingleItem extends Component {
 					readOnly={true}
 					id={str_id}
 					checked={this.props.resolution.ready}
-					onClick={this.toggleChecked.bind(this)} />
-				<label className ="inlinediv" htmlFor={str_id}><h3>name : {this.props.resolution.name} comments : {this.props.resolution.comments} {status}</h3></label>				
+					/>
+				<label className ="inlinediv"><h3>name : {this.props.resolution.name} comments : {this.props.resolution.comments} {status}</h3></label>				
 				</div>
 				)
 	}

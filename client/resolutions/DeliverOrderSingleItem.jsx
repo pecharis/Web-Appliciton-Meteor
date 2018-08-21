@@ -19,9 +19,9 @@ export default class DeliverOrderSingleItem extends Component {
 
 		render () {
 
-		const status= this.props.resolution.status ? <span className="completed_checked">delivered by {this.props.resolution.statusby}</span> : '';	
-		const status2= this.props.resolution.paid ? <span className="completed_paid">paid to {this.props.resolution.paidby}</span> : '';
-		const status3= this.props.resolution.ready ? <span className="completed_ready">ready by {this.props.resolution.readyby}</span> : '';
+		const status= this.props.resolution.status ? <span className="completed_checked">D: {this.props.resolution.statusby}</span> : '';	
+		const status2= this.props.resolution.paid ? <span className="completed_paid">P: {this.props.resolution.paidby}</span> : '';
+		const status3= this.props.resolution.ready ? <span className="completed_ready">R: {this.props.resolution.readyby}</span> : '';
 		const str_id="order_id " + this.props.collection._id + "item_id" + this.props.resolution.itemid;
 
 		
@@ -35,8 +35,7 @@ export default class DeliverOrderSingleItem extends Component {
 						className ="inlinediv"
 						readOnly={true}
 						id={str_id}
-						checked={this.props.resolution.status}
-						onClick={this.toggleChecked.bind(this)} />
+						checked={this.props.resolution.status}/>
 					</div>
 			}else{
   				orders=<h2></h2>
@@ -48,7 +47,7 @@ export default class DeliverOrderSingleItem extends Component {
 		return (
 			<div className="wholediv" onClick={this.toggleChecked.bind(this)}>
 				{orders}
-				<label className ="inlinediv" htmlFor={str_id}><h3>{this.props.number}: {this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments}  {status3}{status}{status2}</h3></label>
+				<label className ="inlinediv"><h3>{this.props.number+1}: {this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments}  {status3}{status}{status2}</h3></label>
 				</div>
 				)
 	}

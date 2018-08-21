@@ -69,9 +69,9 @@ export default class PayOrderSingle extends Component {
 
 	render () {
 		const resolutionClass = this.props.resolution.paid ? "false" : "";
-		const status= this.props.resolution.paid ? <span className="completed_paid">paid</span> : '';
+		const status= this.props.resolution.paid ? <span className="completed_paid">P</span> : '';
 		const resolutionClass2 = this.props.resolution.status ? "pending" : "";
-		const status2= this.props.resolution.status ? <span className="completed_checked">delivered</span> : '';
+		const status2= this.props.resolution.status ? <span className="completed_checked">D</span> : '';
 
 		var single;
 		var listItems;
@@ -90,6 +90,7 @@ export default class PayOrderSingle extends Component {
 				});
 			listItems=test.items.map((resolution,index)=>{
 					return <PayOrderSingleItem key={index} 
+					number={index}
 					resolution={resolution}
 					collection={test}
 					callback={this.updateNow} />				

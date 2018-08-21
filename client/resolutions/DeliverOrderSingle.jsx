@@ -66,10 +66,10 @@ export default class DeliverOrderSingle extends Component {
 
 	render () {
 		const resolutionClass = this.props.resolution.status ? "pending" : "";
-		const status= this.props.resolution.status ? <span className="completed_checked">delivered</span> : '';
+		const status= this.props.resolution.status ? <span className="completed_checked">D</span> : '';
 		const resolutionClass2 = this.props.resolution.paid ? "false" : "";
-		const status2= this.props.resolution.paid ? <span className="completed_paid">paid</span> : '';
-		const status3= this.props.resolution.ready ? <span className="completed_ready">ready</span> : '';
+		const status2= this.props.resolution.paid ? <span className="completed_paid">P</span> : '';
+		const status3= this.props.resolution.ready ? <span className="completed_ready">R</span> : '';
 
 		var single;
 		var listItems;
@@ -165,6 +165,6 @@ export default class DeliverOrderSingle extends Component {
        			</div>
 				
 		}
-		return (<ul>{single}</ul>)
+		return (<ul className="itemdiv">{single}</ul>)
 	}
 }

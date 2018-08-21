@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor'
 
-export default class DeliverOrderSingleItem extends Component {
+export default class COrderSingleItem extends Component {
 
 	toggleChecked() {
 		var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
@@ -43,9 +43,8 @@ export default class DeliverOrderSingleItem extends Component {
 		}
 
 		return (
-			<div className="wholediv" onClick={this.toggleChecked.bind(this)}>
-				{orders}
-				<label className ="inlinediv"><h3>{this.props.number+1}: {this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments} {status}{status2}</h3></label>
+			<div className="wholediv">
+				<label className ="inlinediv"><h3>{this.props.number+1}:{this.props.resolution.name} price : {this.props.resolution.price}€ comments : {this.props.resolution.comments} {status}{status2}</h3></label>
 				</div>
 				)
 	}
