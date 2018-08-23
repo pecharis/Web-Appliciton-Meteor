@@ -11,7 +11,7 @@ Meteor.methods({
 		}
 		Mcollections.insert({
 			category: category,
-			_id: resolution,
+			name: resolution,
 			price: priceres,
 			ingredients : inde,
 			complete: false,
@@ -289,16 +289,16 @@ Meteor.methods({
 	},
 	updateResolution(resolution, txt) {
 		check(resolution, Object);
-		if(Meteor.userId()!== resolution.user){
+		if(!Meteor.userId()){
 			throw new Meteor.Error('not-authorized');
 		}
 		doc = Mcollections.findOne(resolution._id);
-		doc._id = txt;
-		Mcollections.insert(doc);
+		doc.name = txt;
 		Mcollections.remove(resolution._id);
+		Mcollections.insert(doc);		
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].usernames + 
-		" changed the item name from :  " + resolution._id + " to " + txt ;
+		" changed the item name from :  " + resolution.name + " to " + txt ;
 		Meteor.call('updateEvent', test);		
 	},
 	addOrder(localOne){

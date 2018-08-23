@@ -166,7 +166,7 @@ export default class OrderResolution extends TrackerReact(React.Component) {
 				return <OrderResolutionSingle 
 					key={resolution._id} 
 					resolution={resolution} 
-					name={resolution._id}
+					name={resolution.name}
 					callback={this.updateNow} />
 				})
 			}

@@ -18,10 +18,7 @@ export default class Popup extends React.Component {
 				if(error) {
 					Bert.alert('Please login before submitting','danger', 'fixed-top','fa-frown-o');
 				}else {
-				//	this.refs.resolution.value = "";
-				//	this.refs.resolution1.value= "";
-				//	this.refs.resolution2.value= "";
-				//	this.refs.resolution3.value= "";
+					Bert.alert("Menu entry added");
 				}
 			});
 		}		

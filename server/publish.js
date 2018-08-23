@@ -23,6 +23,15 @@ Meteor.publish("allOrders", function(){
 	
 });
 
+Meteor.publish("allUnOrders", function(){
+	if(!Meteor.userId()){throw new Meteor.Error('not-authorized');}
+	var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+	var shop=obj[0].profile.shop;
+	
+	return currOrder.find({shop: shop,completed:false} );
+	
+});
+
 Meteor.publish("currentUserData", function() {
     return Meteor.users.find();
        });   

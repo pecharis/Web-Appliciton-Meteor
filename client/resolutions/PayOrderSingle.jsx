@@ -7,7 +7,7 @@ export default class PayOrderSingle extends Component {
 		super();
 		this.state = {
 			subscription:{
-				currOrderId: Meteor.subscribe("allOrders"),
+				currOrderId: Meteor.subscribe("allUnOrders"),
 				showPopup: false
 			}
 		}
@@ -23,39 +23,44 @@ export default class PayOrderSingle extends Component {
 	}
 
 	toggleChecked() {
-	Meteor.call('togglePayOrder', this.props.resolution);
-		if(this.props.resolution.status===true){
-			Meteor.call('toggleCompleteOrder',this.props.resolution);
-		}
-		if(!this.props.resolution.paid){
-			var test=this.currOrderId(this.props.resolution._id);
+		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
+		if(obj[0]){
+			var pos=obj[0].profile.position;
+			if(pos==="manager" || pos==="waiter"){
+			Meteor.call('togglePayOrder', this.props.resolution);
+				if(this.props.resolution.status===true){
+					Meteor.call('toggleCompleteOrder',this.props.resolution);
+				}
+				if(!this.props.resolution.paid){
+					var test=this.currOrderId(this.props.resolution._id);
 
-			for(var i=0; i<test[0].items.length; i++){
-				if(!test[0].items[i].paid){
-					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
-					Meteor.call('togglePayOrderItem',
-						test[0],test[0].items[i].paid,by,test[0].items[i].name,
-						test[0].items[i].itemid,true, function (err, res) {
-						if(err){
-      						console.log(err);
-   						}else{}     		
-					});
+					for(var i=0; i<test[0].items.length; i++){
+						if(!test[0].items[i].paid){
+							var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
+							Meteor.call('togglePayOrderItem',
+								test[0],test[0].items[i].paid,by,test[0].items[i].name,
+								test[0].items[i].itemid,true, function (err, res) {
+								if(err){
+		      						console.log(err);
+		   						}else{}     		
+							});
+						}
+					}
+				}else{
+					var test=this.currOrderId(this.props.resolution._id);
+
+					for(var i=0; i<test[0].items.length; i++){	
+					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;			
+						Meteor.call('togglePayOrderItem',
+							test[0],test[0].items[i].paid,by,test[0].items[i].name,
+							test[0].items[i].itemid,true, function (err, res) {
+							if(err){
+		      					console.log(err);
+		   					}else{}     		
+							});				
+					}
 				}
 			}
-		}else{
-			var test=this.currOrderId(this.props.resolution._id);
-
-			for(var i=0; i<test[0].items.length; i++){	
-			var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].emails[0].address;			
-				Meteor.call('togglePayOrderItem',
-					test[0],test[0].items[i].paid,by,test[0].items[i].name,
-					test[0].items[i].itemid,true, function (err, res) {
-					if(err){
-      					console.log(err);
-   					}else{}     		
-					});				
-			}
-
 		}
 	}
 
@@ -112,42 +117,27 @@ export default class PayOrderSingle extends Component {
 				count_paid=count_paid+1;
 			}			
 		}
-
-		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
-		let orders=<h2>Loading...</h2>;
-		if(obj[0]){
-			var pos=obj[0].profile.position;
-			if(pos==="manager" || pos==="waiter"){
-				orders=<div className="cdiv">
-					<input type="checkbox"
-					readOnly={true}
-					id={this.props.resolution._id}
-					checked={this.props.resolution.paid}
-					onClick={this.toggleChecked.bind(this)} />
-				</div>
-			}else{
-  				orders=<h2></h2>
-
-			}
-		}
-
+		var orders=<div className="cdivpay"
+				readOnly={true}
+				id={this.props.resolution._id}
+				onClick={this.toggleChecked.bind(this)}>
+				<a className="ctext"><br /><br /><br /><br /><br /></a>
+			</div>
+			
 
 		if(!this.props.resolution.paid && this.props.paid==="false" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
 				{orders}
 				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3>		
-				table : {this.props.resolution.table_number} {" "} paid items {count_paid}/{collection[0].items.length}
-			    {status} {status2} </h3></label>
-				{this.state.showPopup ? 
-          			<div className="testul">
+				table : {this.props.resolution.table_number}  </h3> {" "} paid items {count_paid}/{collection[0].items.length}
+			    {status} {status2}</label>
+				{this.state.showPopup ?
           			<div className="centerdiv2">
-          				<h3>
-		          		time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-						delivered items {count_delivered}/{collection[0].items.length} {" "}				
-						paid total : {collection[0].total-total}€ {" "}
-						remaining total : {total}€
+		          		time of order : <h3>{moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}</h3>
+						delivered items <h3>{count_delivered}/{collection[0].items.length} {" "}</h3>				
+						paid total : <h3>{collection[0].total-total}€ {" "}</h3>
+						remaining total : <h3>{total}€
 						</h3>
-					</div>
           			{listItems}
           			</div>
           			: null
@@ -158,18 +148,15 @@ export default class PayOrderSingle extends Component {
 			single=<div className="wrapper">
 				{orders}
 				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3>		
-				table : {this.props.resolution.table_number} {" "} paid items {count_paid}/{collection[0].items.length}
-			    {status} {status2} </h3></label>
-				{this.state.showPopup ? 
-          			<div className="testul">
-          			<div className="centerdiv2">
-          				<h3>
-		          		time of order : {moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}
-						delivered items {count_delivered}/{collection[0].items.length} {" "}				
-						paid total : {collection[0].total-total}€ {" "}
-						remaining total : {total}€
+				table : {this.props.resolution.table_number} </h3>{" "} paid items {count_paid}/{collection[0].items.length}
+			    {status} {status2} </label>
+				{this.state.showPopup ?
+          			<div className="centerdiv2">          				
+		          		time of order : <h3>{moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}</h3>
+						delivered items <h3>{count_delivered}/{collection[0].items.length} {" "}</h3>				
+						paid total : <h3>{collection[0].total-total}€ {" "}</h3>
+						remaining total : <h3>{total}€
 						</h3>
-					</div>
           			{listItems}
           			</div>
           			: null
@@ -177,6 +164,6 @@ export default class PayOrderSingle extends Component {
 			</div>
 		}
 
-		return (<ul>{single}</ul>)
+		return (<div className="divback">{single}</div>)
 	}
 }

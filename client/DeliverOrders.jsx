@@ -12,8 +12,8 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
 
 		this.state = {
 			subscription:{
-				currOrders: Meteor.subscribe("allOrders"),
-				currOrderId: Meteor.subscribe("allOrders"),
+				currOrders: Meteor.subscribe("allUnOrders"),
+				currOrderId: Meteor.subscribe("allUnOrders"),
 				showPopup: false
 			}
 		}		
@@ -32,7 +32,6 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
     		output.push(array[i].status);
 		}
 		if(output[0]===true && output.length==1){
-			console.log("mpiiiika");
 			Meteor.call('toggleDeliverOrder', this.currOrderId(id)[0]);
 			if(this.currOrderId(id)[0].paid===true){
 				Meteor.call('toggleCompleteOrder',this.currOrderId(id)[0]);
@@ -80,15 +79,7 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
 				<li className="current"><a href="/deliver_orders">Deliver</a></li>
 				<li><a href="/pay_orders">Pay</a></li>
 				<li><a href="/completed_orders">completed</a></li>
-			</nav>	
-			<ReactCSSTransitionGroup
-				component="div"
-				className="divback"
-				transitionName="route"
-				transitionEnterTimeout={600}
-				transitionAppearTimeout={600}
-				transitionLeaveTimeout={400}
-				transitionAppear={true}>
+			</nav>			
 				<h2 className="centerdiv">Pending Orders</h2>
 				{this.currOrders().map( (resolution)=>{
 						return <DeliverOrderSingle
@@ -96,16 +87,7 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
 						resolution={resolution}
 						status="pending"
 						callback={this.updateNow} />
-					})}				   
-			</ReactCSSTransitionGroup>			
-			<ReactCSSTransitionGroup
-				component="div"
-				className="divback2"
-				transitionName="route"
-				transitionEnterTimeout={600}
-				transitionAppearTimeout={600}
-				transitionLeaveTimeout={400}
-				transitionAppear={true}>
+					})}				
 				<h2 className="centerdiv">Delivered Orders</h2>
 				{this.currOrders().map( (resolution)=>{
 						return <DeliverOrderSingle 
@@ -113,8 +95,7 @@ export default class DeliverOrders extends TrackerReact(React.Component) {
 						resolution={resolution} 
 						status="delivered" 
 						callback={this.updateNow}/>
-					})}				   
-			</ReactCSSTransitionGroup>
+					})}	
 			</div>
 		)
 	}

@@ -12,7 +12,7 @@ export default class PayOrders extends TrackerReact(React.Component) {
 
 		this.state = {
 			subscription:{
-				currOrders: Meteor.subscribe("allOrders"),
+				currOrders: Meteor.subscribe("allUnOrders"),
 				showPopup: false
 			}
 		}		
@@ -61,14 +61,6 @@ export default class PayOrders extends TrackerReact(React.Component) {
 				<li className="current"><a href="/pay_orders">Pay</a></li>
 				<li><a href="/completed_orders">completed</a></li>
 			</nav>			
-			<ReactCSSTransitionGroup
-				component="div"
-				className="divback"
-				transitionName="route"
-				transitionEnterTimeout={600}
-				transitionAppearTimeout={600}
-				transitionLeaveTimeout={400}
-				transitionAppear={true}>
 				<h2 className="centerdiv">Pending Orders</h2>
 				{this.currOrders().map( (resolution)=>{
 						return <PayOrderSingle 
@@ -77,15 +69,6 @@ export default class PayOrders extends TrackerReact(React.Component) {
 						paid="false"
 						callback={this.updateNow} />
 					})}				   
-			</ReactCSSTransitionGroup>
-			<ReactCSSTransitionGroup
-				component="div"
-				className="divback2"
-				transitionName="route"
-				transitionEnterTimeout={600}
-				transitionAppearTimeout={600}
-				transitionLeaveTimeout={400}
-				transitionAppear={true}>
 				<h2 className="centerdiv">Paid Orders</h2>
 				{this.currOrders().map( (resolution)=>{
 						return <PayOrderSingle 
@@ -94,7 +77,6 @@ export default class PayOrders extends TrackerReact(React.Component) {
 						paid="true"
 						callback={this.updateNow} />
 					})}				   
-			</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

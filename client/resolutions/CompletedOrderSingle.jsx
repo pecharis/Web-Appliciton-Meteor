@@ -70,9 +70,9 @@ export default class CompletedOrderSingle extends Component {
 			</div>
 		}
 		return (
-			<ul>
+			<div>
 			{single}
-			</ul>
+			</div>
 			)
 	}
 }

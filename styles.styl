@@ -342,20 +342,20 @@ input:-ms-input-placeholder
 .completed_checked
     color black
     display: inline-block;
+    padding 0px 5px
     background teal
-    border-radius 5px
-    padding 5px
     margin-left 20px
+    border:2px solid black;
     animation complete 0.6s ease
     font-size 1em
 
 .completed_paid
     color #FFF
     background #761010
+    padding 0px 5px
     display: inline-block;
-    border-radius 5px
-    padding 5px
     margin-left 20px
+    border:2px solid black;
     animation complete 0.6s ease
     font-size 1em  
 
@@ -363,9 +363,9 @@ input:-ms-input-placeholder
     color #FFF
     display: inline-block;
     background purp
-    border-radius 5px
-    padding 5px
+    padding 0px 5px
     margin-left 20px
+    border:4px solid black;
     animation complete 0.6s ease
     font-size 1em      
    
@@ -436,7 +436,6 @@ input:-ms-input-placeholder
   left: 0;
   right: 0;
 }
-
 
 .snip1339 {
   font-family: 'Raleway', Arial, sans-serif;
@@ -849,13 +848,58 @@ input:-ms-input-placeholder
     vertical-align: top;
     width : 100%;
 }
-.cdiv {
-    display: inline-block;
-    padding: 0px 0px;
-    height: 100%;
-    margin:center;
-    
-    width : 3%;
+.cdivp {
+    height:172px;
+    display:inline-block; 
+    border:2px solid #555;
+    background-image: url("/img/waiter2.jpg");
+    background-size: cover;
+    width : 10%;
+    text-align: center;
+    padding 10px 10px;
+    margin 0;
+    line-height: 10px;
+}
+.cdivpay {
+    height:172px;
+    display:inline-block; 
+    border:2px solid #555;
+    background-image: url("/img/money2.jpg");
+    background-size: cover;
+    width : 10%;
+    text-align: center;
+    padding 10px 10px;
+    margin 0;
+    line-height: 10px;
+}
+.cdivd {
+    height:172px;
+    display:inline-block; 
+    border:2px solid #555;
+    background-image: url("/img/tick.png");
+    background-size: cover;
+    width : 10%;
+    text-align: center;
+    padding 10px 10px;
+    margin 0;
+    line-height: 10px;
+}
+.cdivc {
+    height:170px;
+    display:inline-block; 
+    border: 1px solid #ddd;
+    width : 10%;
+    text-align: center;
+    padding 10px 10px;
+    margin 0;
+    line-height: 10px;
+}
+.ctext{
+  line-height: 20px;
+  font-size: 22px; 
+  font-weight: 200;
+  padding 0px 0px;
+  margin 0;
 }
 .leftdiv2 {
     display: inline-block;
@@ -866,9 +910,6 @@ input:-ms-input-placeholder
     border: 1px solid #ddd;
     width : 85%;
     background-color: white;
-}
-.itemdiv {
-    
 }
 .stuffdiv {
     display: inline-block;
@@ -908,6 +949,7 @@ input:-ms-input-placeholder
     border-right-style:none;
     width : 100%;
     background-color: white;
+     h3 { display:inline;  line-height: 2.5em; padding: 0px 10px;};
 }
 .leftdiv4 {
     display: inline-block;
@@ -919,21 +961,14 @@ input:-ms-input-placeholder
 }
 
 .inlinediv {
-     display: inline-block;
-     font-size: 20px;
-     padding: 0px 0px;
+  display: inline-block;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 200;
+  font-size: 2em; 
+   h3 { display:inline;  line-height: 2.5em; padding: 0px 10px;};
 }   
-
-.wholediv {
-    display: inline-block;
-    padding: 0px 0px;
-    height: 100%;
-    margin:top;
-    vertical-align: top;
-    border: 1px solid #ddd;
-    width : 98%;
-    cursor: -webkit-grab; cursor: grab;
-}
 
 .centerdiv {
     background-color: #962d22;
@@ -943,22 +978,24 @@ input:-ms-input-placeholder
     font-size: 50px;
     margin:0;
     position: relative;
+    border:2px solid #555;
     top: -5px;
 }
 .centerdiv2 {
-    background-color:  light-grey;
+    background: #96c2c2;
     padding: 0px 0px;
     text-align: center;
     font-family: georgia;
     font-size: 16px;
+    border:2px solid #555;
     margin:0;
     position: relative;
     top: -5px;
+    h3 { display:inline;};
 }
 
 .divback{
-    border: 3px solid #a7a7a7;
-    border-top-style:none;
+    padding 0px 0px;
 }
 
 .divback2{
@@ -967,10 +1004,10 @@ input:-ms-input-placeholder
     border-top-style:none;
 }
 
-.wholediv:nth-child(odd){
+.inlinediv:nth-child(odd){
     background-color: white;
 }
-.wholediv:nth-child(even){
+.inlinediv:nth-child(even){
     background-color: grey;
 }
 
@@ -1250,26 +1287,29 @@ button.snip1086.red3 {
 .wrapper{
   width: 100%;
   padding: 0px 0px;
+  margin:0;
   line-height: 3.7em;
   display: inline-block;
 
 }
-
 .testul{
   list-style: none;
+  float right;
   margin: 0;
   padding: 0;
 }
 
 .testlabel{
   display: inline-block;
+  float left;
   cursor: pointer;
-  padding: 20px;
   background: dark-teal;
-  width: 95%;
-   font-weight: 500;
+  width: 90%;
+  font-weight: 500;
   font-size: 3em;
-  border-bottom: none;
+  vertical-align: middle;  
+  border:2px solid #555;
+   h3 { display:inline;  line-height: 3em; padding: 0px 20px;};
 }
 
 .testlabel:hover{

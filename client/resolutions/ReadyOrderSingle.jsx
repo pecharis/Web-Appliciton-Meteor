@@ -7,7 +7,7 @@ export default class ReadyOrderSingle extends Component {
 		super();
 		this.state = {
 			subscription:{
-				currOrderId: Meteor.subscribe("allOrders"),
+				currOrderId: Meteor.subscribe("allUnOrders"),
 				showPopup: false
 			}
 		}	
@@ -24,25 +24,23 @@ export default class ReadyOrderSingle extends Component {
 
 	toggleChecked() {
 	Meteor.call('toggleReadyOrder', this.props.resolution);
+	var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].username;
+	if(by){
 		if(!this.props.resolution.ready){
 			var test=this.currOrderId(this.props.resolution._id);
-
 			for(var i=0; i<test[0].items.length; i++){
-				if(!test[0].items[i].ready){
-					var by=Meteor.users.find({_id : Meteor.userId() }).fetch()[0].usename;
+				if(!test[0].items[i].ready){					
 					Meteor.call('toggleReadyOrderItem',
 						this.props.resolution,test[0].items[i].ready,by,test[0].items[i].name,
 						test[0].items[i].itemid,true, function (err, res) {
 						if(err){
       						console.log(err);
-   						}else{
-     				 	}     		
+   						}else{}     		
 					});
 				}
 			}
 		}else{
 			var test=this.currOrderId(this.props.resolution._id);
-
 			for(var i=0; i<test[0].items.length; i++){	
 			var test=this.currOrderId(this.props.resolution._id);			
 				Meteor.call('toggleReadyOrderItem',
@@ -55,6 +53,7 @@ export default class ReadyOrderSingle extends Component {
 			}
 
 		}
+	}
 	}
 
 
@@ -94,54 +93,53 @@ export default class ReadyOrderSingle extends Component {
 			})				
 		}
 
-		var total=0;
 		var collection=this.currOrderId(this.props.resolution._id);
+		var count_ready=0;
 		for(var i=0; i<collection[0].items.length; i++){				
-			if(!collection[0].items[i].paid){
-				total=total+collection[0].items[i].price;
-			}			
+			if(collection[0].items[i].ready){
+				count_ready=count_ready+1;
+			}	
 		}
 
 		if(!this.props.resolution.ready && this.props.ready==="false" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
-				<input type="checkbox"
+				<div className="cdivd"
 					readOnly={true}
 					id={this.props.resolution._id}
-					checked={this.props.resolution.ready}
-					onClick={this.toggleChecked.bind(this)} />
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table number : {this.props.resolution.table_number} remaining total : {total}€</h3></label>
+					onClick={this.toggleChecked.bind(this)}>
+					<a className="ctext"><br /><br /><br /><br /><br /><br /></a>
+				</div>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table : {this.props.resolution.table_number}</h3> 
+				delivered items : {count_ready}/{collection[0].items.length} {status}</label>
 				{this.state.showPopup ? 
-          			<div className="testul">
+          			<div className="centerdiv2">
+					order taken at <h3>{moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}</h3>	
           			{listItems}
           			</div>
           			: null
        			}
-				<a>   </a>
-				{status}
-			
-			
 			</div>
 		}
 		if(this.props.resolution.ready && this.props.ready==="true" && this.props.resolution.completed===false){
 			single=<div className="wrapper">
-				<input type="checkbox"
+				<div className="cdivd"
 					readOnly={true}
 					id={this.props.resolution._id}
-					checked={this.props.resolution.ready}
-					onClick={this.toggleChecked.bind(this)} />
-				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table number : {this.props.resolution.table_number} {status}</h3></label>
+					onClick={this.toggleChecked.bind(this)}>
+					<a className="ctext"><br /><br /><br /><br /><br /><br /></a>
+				</div>
+				<label className="testlabel" onClick={this.togglePopup.bind(this)}><h3> table : {this.props.resolution.table_number}</h3>
+				 delivered items : {count_ready}/{collection[0].items.length} {status}</label>
 				{this.state.showPopup ? 
-          			<div className="testul">
+					<div className="centerdiv2">
+					order taken at <h3>{moment(this.props.resolution.last_modified).format("HH:mm:ss")} {" "}</h3>	
           			{listItems}
           			</div>
           			: null
-       			}
-				
-				
-			
+       			}			
 			</div>
 		}
 
-		return (<ul>{single}</ul>)
+		return (<div className="divback">{single}</div>)
 	}
 }

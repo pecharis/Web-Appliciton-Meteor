@@ -20,19 +20,11 @@ export default class DeliverOrderSingleItem extends Component {
 	render () {
 		const resolutionClass = this.props.resolution.ready ? "false" : "";
 		const status= this.props.resolution.ready ? <span className="completed_paid">ready by {this.props.resolution.readyby}</span> : '';
-	//	const resolutionClass2 = this.props.resolution.status ? "false" : "";
-	//	const status2= this.props.resolution.status ? <span className="completed_checked">delivered</span> : '';
 		const str_id="order_id " + this.props.collection._id + "item_id" + this.props.resolution.itemid;		
 
 		return (
-			<div className="wholediv" onClick={this.toggleChecked.bind(this)} >
-				<input type="checkbox"
-					readOnly={true}
-					id={str_id}
-					checked={this.props.resolution.ready}
-					/>
-				<label className ="inlinediv"><h3>name : {this.props.resolution.name} comments : {this.props.resolution.comments} {status}</h3></label>				
-				</div>
-				)
+				<label onClick={this.toggleChecked.bind(this)} className ="inlinediv"><h3>{this.props.resolution.name}</h3>
+				 comments : <h3>{this.props.resolution.comments}</h3> {status}</label>	
+		)
 	}
 }

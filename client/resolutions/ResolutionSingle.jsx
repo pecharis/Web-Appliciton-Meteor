@@ -10,7 +10,7 @@ export default class ResolutionSingle extends Component {
 	}
 	updateResolution() {
 		var txt;
-    	var person = prompt("Name:", this.props.resolution._id);
+    	var person = prompt("Name:", this.props.resolution.name);
     	if (person == null || person == "") {
 	        	txt = "User cancelled the prompt.";
     	} else {
@@ -29,10 +29,7 @@ export default class ResolutionSingle extends Component {
 					readOnly={true}
 					checked={this.props.resolution.complete}
 					onClick={this.toggleChecked.bind(this)} />
-				<a jref={`/resolutions/${this.props.resolution._id}`}>{this.props.resolution._id}</a>
-				<a>   </a>
-				<a>{this.props.resolution.price} €</a>
-				{status}
+				<a onClick={this.toggleChecked.bind(this)}>{this.props.resolution.name} {"   "} {this.props.resolution.price} € {"   "} {status}</a>				
 				<button  className="btn-cancel"
 					onClick={this.deleteResolution.bind(this)}>
 					&times;
