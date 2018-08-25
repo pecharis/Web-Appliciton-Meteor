@@ -201,7 +201,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 							ctotal=ctotal+obj[i].total;
 						}
 						intro=<div><h2>Today's number of pending orders is {Porders}</h2>
-								   <h2>Today's number of completed orders is {Corders} Total ammount of : {ctotal}€</h2>
+								   <h2>Today's number of completed orders is {Corders} Total ammount of : {ctotal.toFixed(2)}€</h2>
 							  </div>
 
 			}

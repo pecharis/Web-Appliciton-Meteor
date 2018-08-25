@@ -122,10 +122,10 @@ Meteor.methods({
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(resolution.complete==false){
 			var test="" + obj[0].username + 
-			" set " + resolution._id + " temporary out of menu ";
+			" set " + resolution.name + " temporary out of menu ";
 		}else{
 			var test="" + obj[0].username + 
-			" set " + resolution._id + " back to the menu ";
+			" set " + resolution.name + " back to the menu ";
 		}
 		Meteor.call('updateEvent', test);
 	},

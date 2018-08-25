@@ -37,7 +37,7 @@ export default class CurrentOrder extends TrackerReact(React.Component) {
 			currOrder=<h2>Choose table first :</h2>
 			listItems= <h2> </h2>
 		}else{
-			currOrder=<button className="snip1086 red3" onClick={this.togglePopup.bind(this)}>Table Number {Session.get('table_number')} Total {Session.get('total')}€</button>
+			currOrder=<button className="snip1086 red3" onClick={this.togglePopup.bind(this)}>Table Number {Session.get('table_number')} Total {Session.get('total').toFixed(2)}€</button>
 			listItems= <h2>No items yet </h2>		
 		if(test && test.items){
 				var array=test.items;
