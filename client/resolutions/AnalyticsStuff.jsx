@@ -10,7 +10,8 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 			subscription:{
 				currOrders: Meteor.subscribe("allOrders"),
 				showPopup: false,
-				showPopup2: false
+				showPopup2: false,
+				showPopup3: false
 			}
 		}
 	}	
@@ -18,19 +19,43 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 	togglePopup() {
    		this.setState({
       		showPopup: !this.state.showPopup,
-      		showPopup2: false
+      		showPopup2: false,
+      		showPopup3: false
    		});
 	}
 	togglePopup2() {
    		this.setState({
       		showPopup2: !this.state.showPopup2,
-      		showPopup: false
+      		showPopup: false,
+      		showPopup3: false
+   		});
+	}
+	togglePopup3() {
+   		this.setState({
+      		showPopup3: !this.state.showPopup3,
+      		showPopup: false,
+      		showPopup2: false
    		});
 	}
 
 
 	currOrders() {
-		return currOrder.find().fetch();
+		if(this.props.date==="today"){
+			console.log("today");
+			var date = new Date()
+			var today = moment(date).format("MM.DD.YYYY");
+			return currOrder.find({'last_modified':{$gte: new Date(today)}}).fetch();	
+		}
+		if(this.props.date==="week"){
+			console.log("week");
+			var today = moment().subtract(1, 'weeks').startOf('isoWeek').format("MM.DD.YYYY");
+			return currOrder.find({'last_modified':{$gte: new Date(today)}}).fetch();
+		}
+		if(this.props.date==="all")	{
+			console.log("all");
+			return currOrder.find().fetch();
+		}
+		
 	}
 
 	render () {
@@ -40,10 +65,13 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 
 		var countpaid=[];
 		var itemsdel=[];
+		var ordersTaken=[];
 		var itemspaid=[];
 		var countstatus=[];
+		var anadel=[];
 		var flags;
 		var flagp;
+		var numberOfOrders=0;
 
 		if(!test){
 			item=<div>Loading...</div>
@@ -52,7 +80,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 				var counts = 0;				
 				var countp = 0;
 					for(var i=0; i<obj.items.length; i++){
-						if(obj.items[i].paid && obj.items[i].paidby===this.props.name){
+						if(obj.items[i].paid && obj.items[i].paidby===this.props.name.username){
 							flagp=true;
 							for(var y=0; y<itemspaid.length; y++){
 								if(obj.items[i].name===itemspaid[y].label){
@@ -67,7 +95,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 							countp = countp + obj.items[i].price;
 						}
 
-						if(obj.items[i].status && obj.items[i].statusby===this.props.name){
+						if(obj.items[i].status && obj.items[i].statusby===this.props.name.username){
 							flags=true;
 							for(var y=0; y<itemsdel.length; y++){
 								if(obj.items[i].name===itemsdel[y].label){
@@ -80,25 +108,78 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 																
 							}
 							counts = counts + 1;
+							if(obj.items[i].readyAt){
+								anadel.push({item : obj.items[i].name, readyAt: moment(obj.items[i].readyAt).format("HH:mm:ss"), statusAt: moment(obj.items[i].statusAt).format("HH:mm:ss"), table_number: obj.table_number});
+							}else{
+								anadel.push({item : obj.items[i].name, readyAt: moment(obj.last_modified).format("HH:mm:ss"), statusAt: moment(obj.items[i].statusAt).format("HH:mm:ss"), table_number: obj.table_number});
+							}
 						}
 						
+					}					
+					if(obj.user===this.props.name._id){
+						numberOfOrders=numberOfOrders+1;
+						if(obj.completed==true){
+							if(obj.readyAt){
+								ordersTaken.push({date : moment(obj.last_modified).format("HH:mm:ss"),
+								day : moment(obj.last_modified).format("MM.DD"),
+								table_number: obj.table_number, total: obj.total,
+								readyAt: moment(obj.readyAt).format("HH:mm:ss"),
+								statusAt: moment(obj.statusAt).format("HH:mm:ss"),
+								paidAt : moment(obj.paidAt).format("HH:mm:ss"),
+								completedAt : moment(obj.completedAt).format("HH:mm:ss")});
+							}else{
+								ordersTaken.push({date : moment(obj.last_modified).format("HH:mm:ss"),
+								day : moment(obj.last_modified).format("MM.DD"),
+								table_number: obj.table_number, total: obj.total,			
+								readyAt: moment(obj.last_modified).format("HH:mm:ss"),
+								statusAt: moment(obj.statusAt).format("HH:mm:ss"),
+								paidAt : moment(obj.paidAt).format("HH:mm:ss"),
+								completedAt : moment(obj.completedAt).format("HH:mm:ss")});
+							}
+						}
 					}
 					countstatus.push(counts);
 					countpaid.push(countp);
 
 				})
 		}
+		var ord=<a></a>
+		if(ordersTaken){
+			ord=ordersTaken.map((objf,index)=>{
+				return <ul className="inlinediv" key={index}>
+				<h3>Table "{objf.table_number}"  total : {objf.total}€</h3><br />
+				<a>Taken : </a><h3>{objf.day}</h3><a> at </a><h3>{objf.date}</h3><br />
+				<a>completed </a><h3>{objf.completedAt}</h3><br />
+				<a>ready </a><h3>{objf.readyAt}</h3><a> after </a><h3>{moment(objf.readyAt,"HH:mm:ss").diff(moment(objf.date,"HH:mm:ss"),'m')}</h3><a>min</a><br />
+				<a>delivered </a><h3>{objf.statusAt}</h3><a> after </a><h3>{moment(objf.statusAt,"HH:mm:ss").diff(moment(objf.readyAt,"HH:mm:ss"),'m')}</h3><a>min</a><br />
+				<a>paid at </a><h3>{objf.paidAt}</h3>
+				</ul>
+			})
+		}
 		var status=<a></a>
 		if(itemsdel){
 			status=itemsdel.map((obj,index)=>{
-				return <ul key={index}><a> {obj.label} x{obj.value}</a></ul>
+				return <li key={index}><a> {obj.label} x{obj.value}</a></li>
 				//console.log(obj.label);
 			})
+		}
+		var status2=<a></a>
+		var meso=0;
+		if(anadel){
+			status2=anadel.map((obj,index)=>{
+				meso=meso + moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m');
+				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after {moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m')} <a> minutes</a></li>
+			})
+			meso=meso/anadel.length;
+		}
+		var mesod=<a></a>
+		if(meso!=0){
+			mesod=<p>estimated to deliver an item after {meso.toFixed(2)}mins </p>
 		}
 		var paid=<a></a>
 		if(itemspaid){
 			paid=itemspaid.map((obj,index)=>{
-				return <ul key={index}><a> {obj.label} x{obj.value} price {obj.price} total : {obj.price*obj.value}</a></ul>
+				return <ul key={index}><a> {obj.label} x{obj.value} price {obj.price} total : {obj.price*obj.value}€</a></ul>
 				//console.log(obj.label);
 			})
 		}
@@ -106,27 +187,40 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 		const add = (a, b) =>
  			a + b
 		
-		return(
-			<div>
-				<h3>{this.props.name}</h3>
-				<li>
-					<a> Total items </a><button onClick={this.togglePopup.bind(this)}>delivered</button>  <a> : {countstatus.reduce(add,0)} </a>
-					<a> Total </a><button onClick={this.togglePopup2.bind(this)}>paid</button> <a> : {countpaid.reduce(add,0)}€ </a>
-				</li>
-				{this.state.showPopup ?
-					<div>
-						<h3>delivered</h3> 
-          				{status}
-          			</div>
-          			: null
-       			}
-       			{this.state.showPopup2 ?
-					<div> 
-						<h3>paid</h3> 
-          				{paid}
-          			</div>
-          			: null
-       			}
+		return(		
+				<div className="inlinediv"><h2>{this.props.name.username}</h2>				
+						
+					<ul className="resolutions">							
+					<li><a>Orders taken : </a><button className="btn-text" onClick={this.togglePopup3.bind(this)}>{numberOfOrders} out of {test.length}</button></li>
+					<br />					
+					<li><a> Total items </a><button className="btn-text" onClick={this.togglePopup.bind(this)}>delivered : {countstatus.reduce(add,0)}</button></li>
+					<br />
+					<li><a> Total </a><button className="btn-text" onClick={this.togglePopup2.bind(this)}>paid  : {countpaid.reduce(add,0)}€ </button></li>
+					</ul>
+					{this.state.showPopup3 ?
+						<div>  
+	          				{ord}
+	          			</div>
+	          			: null
+	       			} 
+					{this.state.showPopup ?
+						<div className="inlinediv">
+							<h3>delivered total : </h3>							
+							<div>
+							{status}{mesod}
+							{status2}
+							</div>
+	          			</div>
+	          			: null
+	       			}
+	       			{this.state.showPopup2 ?
+						<div> 
+							<h3>paid</h3> 
+	          				{paid}
+	          			</div>
+	          			: null
+	       			}
+	       			
 			</div>		
 		)
 	}

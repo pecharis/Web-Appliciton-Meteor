@@ -20,7 +20,7 @@ Meteor.methods({
 			shop : shop
 		});
 		
-		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+		var test="" + obj[0].username + 
 		" added a new entry to the menu at category : " + category + 
 		" with name " + resolution + " and price : " + priceres;
 		Meteor.call('updateEvent', test);
@@ -121,10 +121,10 @@ Meteor.methods({
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(resolution.complete==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" set " + resolution._id + " temporary out of menu ";
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" set " + resolution._id + " back to the menu ";
 		}
 		Meteor.call('updateEvent', test);
@@ -148,14 +148,14 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update(resolution._id, {
-			$set: {status: !resolution.status}
+			$set: {status: !resolution.status, statusAt:new Date() }
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(resolution.status==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" completed delivering all items of table : " + resolution.table_number;
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			"unchecked all delivered items of table : " + resolution.table_number;
 		}
 		Meteor.call('updateEvent', test);
@@ -166,14 +166,14 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update({ _id : resolution._id, "items.itemid":itemid },
-			{ $set: { "items.$.status" : !status , "items.$.statusby" : by}
+			{ $set: { "items.$.status" : !status , "items.$.statusby" : by, "items.$.statusAt" : new Date()}
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(status==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" delivered " + name + " of table : " + resolution.table_number;
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test=""+ obj[0].username + 
 			" un-delivered " + name + " of table : " + resolution.table_number;
 		}
 		if(mass==false){
@@ -186,14 +186,14 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update({ _id : resolution._id, "items.itemid":itemid },
-			{ $set: { "items.$.paid" : !paid , "items.$.paidby" : by}
+			{ $set: { "items.$.paid" : !paid , "items.$.paidby" : by, "items.$.paidAt" : new Date()}
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(paid==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test=""+ obj[0].username + 
 			" was paid " + name + " of table : " + resolution.table_number;
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" unchecked paid status of " + name + " of table : " + resolution.table_number;
 		}
 		if(mass==false){
@@ -206,14 +206,14 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update({ _id : resolution._id, "items.itemid": itemid},
-			{ $set: { "items.$.ready" : !ready , "items.$.readyby" : by}
+			{ $set: { "items.$.ready" : !ready , "items.$.readyby" : by, "items.$.readyAt" : new Date()}
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(ready==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" set ready " + name + " of table : " + resolution.table_number;
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" set un-ready " + name + " of table : " + resolution.table_number;
 		}
 		if(mass==false){
@@ -226,9 +226,9 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update(resolution._id, {
-			$set: {completed: !resolution.completed}
+			$set: {completed: !resolution.completed, completedAt: new Date()}
 		});
-		var test="" + moment().format("HH:mm:ss")+ ": " + "order of table : " + resolution.table_number + " completed ";
+		var test="" + "order of table : " + resolution.table_number + " completed ";
 		Meteor.call('updateEvent', test);
 	},
 	togglePayOrder(resolution) {
@@ -237,11 +237,11 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update(resolution._id, {
-			$set: {paid: !resolution.paid}
+			$set: {paid: !resolution.paid, paidAt: new Date()}
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(resolution.paid==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" was paid the last item of table : " + resolution.table_number;
 		}else{
 			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
@@ -255,14 +255,14 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 		currOrder.update(resolution._id, {
-			$set: {ready: !resolution.ready}
+			$set: {ready: !resolution.ready, readyAt: new Date()}
 		});
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
 		if(resolution.ready==false){
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" prepared items of table : " + resolution.table_number;
 		}else{
-			var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+			var test="" + obj[0].username + 
 			" unchecked the ready status of all items at table : " + resolution.table_number;
 		}
 		Meteor.call('updateEvent', test);
@@ -273,7 +273,7 @@ Meteor.methods({
 		}
 		Mcollections.remove(resolution._id);
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
-		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+		var test="" + obj[0].username + 
 		" deleted from menu the : " + resolution._id;
 		Meteor.call('updateEvent', test);
 	},
@@ -283,7 +283,7 @@ Meteor.methods({
 		}
 		currOrder.remove(resolution._id);
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
-		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+		var test="" + obj[0].username + 
 		" deleted order of table :  " + resolution.table_number;
 		Meteor.call('updateEvent', test);
 	},
@@ -297,7 +297,7 @@ Meteor.methods({
 		Mcollections.remove(resolution._id);
 		Mcollections.insert(doc);		
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
-		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].usernames + 
+		var test="" + obj[0].username + 
 		" changed the item name from :  " + resolution.name + " to " + txt ;
 		Meteor.call('updateEvent', test);		
 	},
