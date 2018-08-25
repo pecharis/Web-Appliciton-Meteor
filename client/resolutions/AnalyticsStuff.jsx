@@ -146,14 +146,26 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 		var ord=<a></a>
 		if(ordersTaken){
 			ord=ordersTaken.map((objf,index)=>{
-				return <ul className="inlinediv" key={index}>
-				<h3>Table "{objf.table_number}"  total : {objf.total}€</h3><br />
-				<a>Taken : </a><h3>{objf.day}</h3><a> at </a><h3>{objf.date}</h3><br />
-				<a>completed </a><h3>{objf.completedAt}</h3><br />
-				<a>ready </a><h3>{objf.readyAt}</h3><a> after </a><h3>{moment(objf.readyAt,"HH:mm:ss").diff(moment(objf.date,"HH:mm:ss"),'m')}</h3><a>min</a><br />
-				<a>delivered </a><h3>{objf.statusAt}</h3><a> after </a><h3>{moment(objf.statusAt,"HH:mm:ss").diff(moment(objf.readyAt,"HH:mm:ss"),'m')}</h3><a>min</a><br />
-				<a>paid at </a><h3>{objf.paidAt}</h3>
-				</ul>
+				var diff=moment(objf.statusAt,"HH:mm:ss").diff(moment(objf.readyAt,"HH:mm:ss"),'m');
+				if(diff>=0){
+					return <ul className="inlinediv" key={index}>
+					<h3>Table "{objf.table_number}"  total : {objf.total}€</h3><br />
+					<a>Taken : </a><h3>{objf.day}</h3><a> at </a><h3>{objf.date}</h3><br />
+					<a>completed </a><h3>{objf.completedAt}</h3><br />
+					<a>ready </a><h3>{objf.readyAt}</h3><a> after </a><h3>{moment(objf.readyAt,"HH:mm:ss").diff(moment(objf.date,"HH:mm:ss"),'m')}</h3><a>min</a><br />
+					<a>delivered </a><h3>{objf.statusAt}</h3><a> after </a><h3>{diff}</h3><a>min</a><br />
+					<a>paid at </a><h3>{objf.paidAt}</h3>
+					</ul>
+				}else{
+					return <ul className="inlinediv" key={index}>
+					<h3>Table "{objf.table_number}"  total : {objf.total}€</h3><br />
+					<a>Taken : </a><h3>{objf.day}</h3><a> at </a><h3>{objf.date}</h3><br />
+					<a>completed </a><h3>{objf.completedAt}</h3><br />
+					<a>ready </a><h3>{objf.readyAt}</h3><a> after </a><h3>{moment(objf.readyAt,"HH:mm:ss").diff(moment(objf.date,"HH:mm:ss"),'m')}</h3><a>min</a><br />
+					<a>delivered </a><h3>{objf.statusAt}</h3><a> after </a><h3>0</h3><a>min</a><br />
+					<a>paid at </a><h3>{objf.paidAt}</h3>
+					</ul>
+				}
 			})
 		}
 		var status=<a></a>
@@ -166,9 +178,14 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 		var status2=<a></a>
 		var meso=0;
 		if(anadel){
-			status2=anadel.map((obj,index)=>{
+			status2=anadel.map((obj,index)=>{				
+				var diff2=moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m');
+				if(diff2>=0){
 				meso=meso + moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m');
-				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after {moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m')} <a> minutes</a></li>
+				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after {diff2} <a> minutes</a></li>
+				}else{
+				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after 0 <a> minutes</a></li>	
+				}
 			})
 			meso=meso/anadel.length;
 		}

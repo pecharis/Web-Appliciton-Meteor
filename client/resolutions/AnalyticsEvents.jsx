@@ -23,7 +23,7 @@ export default class AnalyticsEvents extends TrackerReact(React.Component) {
 		var test=this.alleventlogs();
 		var items=<a></a>
 		items=test.map((str,index)=>{
-				return <ul key={index}><h3> {str.log}</h3></ul>
+				return <ul key={index}><h3>{ moment(str.date).format("HH:mm:ss")} {str.log}</h3></ul>
 				//console.log(obj.label);
 			})
 		return(

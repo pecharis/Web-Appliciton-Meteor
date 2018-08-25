@@ -308,7 +308,7 @@ Meteor.methods({
 		}
 		currOrder.update({ _id : localOne._id},localOne,{ upsert : true });
 		var obj=Meteor.users.find({"_id" : Meteor.userId()}).fetch();
-		var test="" + moment().format("HH:mm:ss")+ ": " + obj[0].username + 
+		var test="" + obj[0].username + 
 		" added a new order at table :  " + localOne.table_number ;
 		Meteor.call('updateEvent', test);	
 	},
