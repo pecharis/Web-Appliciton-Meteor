@@ -8,11 +8,15 @@ export default class AnalyticsMenu extends TrackerReact(React.Component) {
 	}
 
 	render () {
+		console.log("at ",this.props.resolution.label,"count : ",this.props.resolution.Corders);
 		return(
 			<div className="inlinediv">
 			<h3>{this.props.resolution.label}</h3>
-			<a> times ordered : {this.props.resolution.value} with price : {this.props.resolution.price}€</a>
+			<a> Times ordered : {this.props.resolution.value}  Price : {this.props.resolution.price}€</a>
 			<a> Total income : {(this.props.resolution.value*this.props.resolution.price).toFixed(2)}€</a>
+			<br />
+			<p>Estimated time of preparation : {(this.props.resolution.count/this.props.resolution.value).toFixed(2)} minutes</p>
+			<p>Added to an order rate : {(this.props.resolution.value/this.props.Corders).toFixed(2)}</p>
 			</div>
 		)
 	}

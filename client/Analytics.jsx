@@ -64,7 +64,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 		if(obj[0]){
 			var pos=obj[0].profile.position;
 			if(pos==="manager" && obj[0].profile.status==="accepted"){
-				sel=<div className="leftdiv3"><p>choosing time</p>\
+				sel=<div className="leftdiv3"><p>choosing time</p>
 					<div className="leftdiv">
 					<div className="new-resolution">			
 					      		<label>
@@ -77,7 +77,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 						        	<input type="radio" value="stuff" 
 						                checked={this.state.selectedOption.value === 'stuff'} 
 						                onChange={this.handleChange.bind(this)}/>
-						        stuff
+						        staff
 						        </label>						   
 						     	<label>
 						        	<input type="radio" value="event log" 
@@ -126,7 +126,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 					var today = moment().subtract(1, 'weeks').startOf('isoWeek').format("MM.DD.YYYY");
 				}				
 				var distinctEntries =currOrder.find({'last_modified':{$gte: new Date(today)}}, 
-					{sort: {"items.value": 1}, fields: {"items.name" : true, "items.price" : true}
+					{sort: {"items.value": 1}, fields: {"items.name" : true, "items.price" : true, "last_modified": true, "items.readyAt":true }
 					}).fetch().map(function(x) {
 						for(var i=0; i<x.items.length;i++){
 							var flag=true;
@@ -134,12 +134,26 @@ export default class Analytics extends TrackerReact(React.Component) {
 								if(localitems[y] && flag==true){
 									if(localitems[y].label===x.items[i].name){
 										localitems[y].value=localitems[y].value+1;
+										if(x.items[i].readyAt){
+											if(moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')>=0){
+												localitems[y].count=localitems[y].count + moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m');
+											}
+										}
 										flag=false;
 									}
 								}
 							}
 							if(flag){
-								localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price});
+								if(x.items[i].readyAt){
+									if(moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')>=0){
+										localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price,
+											count : moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')});
+									}else{
+										localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price, count: 0} );
+									}
+								}else{
+									localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price, count: 0} );
+								}
 							}
 						}
    					 
@@ -147,28 +161,76 @@ export default class Analytics extends TrackerReact(React.Component) {
 				if(selectedOption2.value==="all"){
 					//console.log("all");
 					var distinctEntries =currOrder.find({}, 
-					{sort: {"items.value": 1}, fields: {"items.name" : true, "items.price" : true}
+					{sort: {"items.value": 1}, fields: {"items.name" : true, "items.price" : true, "last_modified": true, "items.readyAt":true}
 					}).fetch().map(function(x) {
 						for(var i=0; i<x.items.length;i++){
 							var flag=true;
+							var count=0;
 							for(var y=0; y<localitems.length;y++){
 								if(localitems[y] && flag==true){
 									if(localitems[y].label===x.items[i].name){
 										localitems[y].value=localitems[y].value+1;
+										if(x.items[i].readyAt){
+											if(moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')>=0){
+												localitems[y].count=localitems[y].count + moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m');
+											}
+										}
 										flag=false;
 									}
-								}
+								}							
 							}
 							if(flag){
-								localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price});
+								if(x.items[i].readyAt){
+									if(moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')>=0){
+										localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price,
+											count : moment(moment(x.items[i].readyAt).format("HH:mm:ss"),"HH:mm:ss").diff(moment(x.last_modified,"HH:mm:ss"),'m')});
+									}else{
+										localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price, count: 0} );
+									}
+								}else{
+									localitems.push({value : 1 , label: x.items[i].name,price : x.items[i].price, count: 0} );
+								}
 							}
 						}
    					 
 				});	
 				}	
+
+				if(selectedOption2){
+					if(selectedOption2.value==="today"){				
+								var date = new Date()
+								var today = moment(date).format("MM.DD.YYYY");
+								var Corders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch().length;
+								var Porders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : false}).fetch().length;
+								var ctotal=0;
+								obj=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch();
+								for(let i=0; i<obj.length; i++){
+									ctotal=ctotal+obj[i].total;
+								}
+								intro=<div><h2>Today's number of pending orders is {Porders}</h2>
+										   <h2>Today's number of completed orders is {Corders} Total ammount of : {ctotal.toFixed(2)}€</h2>
+									  </div>
+
+					}
+					if(selectedOption2.value==="week"){				
+								var date = new Date()
+								var today = moment().subtract(1, 'weeks').startOf('isoWeek').format("MM.DD.YYYY");
+								var Corders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch().length;
+								intro=<div><h2>Number of completed orders from "{today}" are : {Corders}</h2>
+									  </div>
+
+					}
+					if(selectedOption2.value==="all"){
+								var Corders=currOrder.find({completed : true}).fetch().length;
+								intro=<div><h2>Number of completed orders from "the beginning of time" are : {Corders}</h2>
+									  </div>
+
+					}
+				}
 				items=localitems.map((curr,index)=>{
 					return <AnalyticsMenu key={index}
 					resolution={curr}
+					Corders={Corders}
 					date={selectedOption2.value}/>
 					//console.log(curr.label,curr.value);
 				})
@@ -189,37 +251,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 				date={selectedOption2.value}/>
 			}
 		}
-		if(selectedOption2){
-			if(selectedOption2.value==="today"){				
-						var date = new Date()
-						var today = moment(date).format("MM.DD.YYYY");
-						var Corders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch().length;
-						var Porders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : false}).fetch().length;
-						var ctotal=0;
-						obj=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch();
-						for(let i=0; i<obj.length; i++){
-							ctotal=ctotal+obj[i].total;
-						}
-						intro=<div><h2>Today's number of pending orders is {Porders}</h2>
-								   <h2>Today's number of completed orders is {Corders} Total ammount of : {ctotal.toFixed(2)}€</h2>
-							  </div>
-
-			}
-			if(selectedOption2.value==="week"){				
-						var date = new Date()
-						var today = moment().subtract(1, 'weeks').startOf('isoWeek').format("MM.DD.YYYY");
-						var Corders=currOrder.find({'last_modified':{$gte: new Date(today)},completed : true}).fetch().length;
-						intro=<div><h2>Number of completed orders from "{today}" are : {Corders}</h2>
-							  </div>
-
-			}
-			if(selectedOption2.value==="all"){
-						var Corders=currOrder.find({completed : true}).fetch().length;
-						intro=<div><h2>Number of completed orders from "the beginning of time" are : {Corders}</h2>
-							  </div>
-
-			}
-		}
+	
 
 		return (
 			<ReactCSSTransitionGroup

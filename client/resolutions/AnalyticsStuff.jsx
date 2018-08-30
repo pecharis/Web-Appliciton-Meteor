@@ -171,7 +171,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 		var status=<a></a>
 		if(itemsdel){
 			status=itemsdel.map((obj,index)=>{
-				return <li key={index}><a> {obj.label} x{obj.value}</a></li>
+				return <div key={index} ><a>{index}: "{obj.label} x{obj.value}"</a> <br /></div>
 				//console.log(obj.label);
 			})
 		}
@@ -182,16 +182,16 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 				var diff2=moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m');
 				if(diff2>=0){
 				meso=meso + moment(obj.statusAt,"HH:mm:ss").diff(moment(obj.readyAt,"HH:mm:ss"),'m');
-				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after {diff2} <a> minutes</a></li>
+				return <div key={index}><a>{obj.statusAt} : Table {obj.table_number} {obj.item}</a> <br /><p> delivered after {diff2} minutes</p></div>
 				}else{
-				return <li key={index}>{obj.statusAt} : Table {obj.table_number} {obj.item} <br /> delivered after 0 <a> minutes</a></li>	
+				return <div  key={index}><a>{obj.statusAt} : Table {obj.table_number} {obj.item}</a> <br /><p> delivered after 0 minutes</p></div>	
 				}
 			})
 			meso=meso/anadel.length;
 		}
 		var mesod=<a></a>
 		if(meso!=0){
-			mesod=<p>estimated to deliver an item after {meso.toFixed(2)}mins </p>
+			mesod=<p>Estimated to deliver an item after {meso.toFixed(2)}mins </p>
 		}
 		var paid=<a></a>
 		if(itemspaid){
@@ -210,9 +210,9 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 					<ul className="resolutions">							
 					<li><a>Orders taken : </a><button className="btn-text" onClick={this.togglePopup3.bind(this)}>{numberOfOrders} out of {test.length}</button></li>
 					<br />					
-					<li><a> Total items </a><button className="btn-text" onClick={this.togglePopup.bind(this)}>delivered : {countstatus.reduce(add,0)}</button></li>
+					<li><a> Total items : </a><button className="btn-text" onClick={this.togglePopup.bind(this)}>delivered : {countstatus.reduce(add,0)}</button></li>
 					<br />
-					<li><a> Total </a><button className="btn-text" onClick={this.togglePopup2.bind(this)}>paid  : {countpaid.reduce(add,0)}€ </button></li>
+					<li><a> Total : </a><button className="btn-text" onClick={this.togglePopup2.bind(this)}>paid  : {countpaid.reduce(add,0)}€ </button></li>
 					</ul>
 					{this.state.showPopup3 ?
 						<div>  
