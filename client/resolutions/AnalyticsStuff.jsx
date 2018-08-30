@@ -144,7 +144,7 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 				})
 		}
 		var ord=<a></a>
-		if(ordersTaken){
+		if(ordersTaken){			
 			ord=ordersTaken.map((objf,index)=>{
 				var diff=moment(objf.statusAt,"HH:mm:ss").diff(moment(objf.readyAt,"HH:mm:ss"),'m');
 				if(diff>=0){
@@ -210,9 +210,9 @@ export default class AnalyticsStuff extends TrackerReact(React.Component) {
 					<ul className="resolutions">							
 					<li><a>Orders taken : </a><button className="btn-text" onClick={this.togglePopup3.bind(this)}>{numberOfOrders} out of {test.length}</button></li>
 					<br />					
-					<li><a> Total items : </a><button className="btn-text" onClick={this.togglePopup.bind(this)}>delivered : {countstatus.reduce(add,0)}</button></li>
+					<li><a> Total items : </a><button className="btn-text" onClick={this.togglePopup.bind(this)}>delivered : {countstatus.reduce(add,0).toFixed(2)}</button></li>
 					<br />
-					<li><a> Total : </a><button className="btn-text" onClick={this.togglePopup2.bind(this)}>paid  : {countpaid.reduce(add,0)}€ </button></li>
+					<li><a> Total : </a><button className="btn-text" onClick={this.togglePopup2.bind(this)}>paid  : {countpaid.reduce(add,0).toFixed(2)}€ </button></li>
 					</ul>
 					{this.state.showPopup3 ?
 						<div>  

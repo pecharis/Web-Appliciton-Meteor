@@ -196,7 +196,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 				});	
 				}	
 
-				if(selectedOption2){
+				//if(selectedOption2){
 					if(selectedOption2.value==="today"){				
 								var date = new Date()
 								var today = moment(date).format("MM.DD.YYYY");
@@ -226,7 +226,7 @@ export default class Analytics extends TrackerReact(React.Component) {
 									  </div>
 
 					}
-				}
+				//}
 				items=localitems.map((curr,index)=>{
 					return <AnalyticsMenu key={index}
 					resolution={curr}
